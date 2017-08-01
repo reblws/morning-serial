@@ -1,6 +1,15 @@
 const FeedParser = require('feedparser-promised');
 
 class Feed {
+  static normalize(data, schema) {
+    const toSchema = ({title, date, link})  => ({
+      title,
+      publishedAt: date,
+      link,
+    });
+    return data.map(toSchema);
+  }
+
   constructor(uri) {
     const options = {
       uri,
@@ -10,7 +19,7 @@ class Feed {
   }
 
   get listing() {
-    return this.parseFeed;
+    return this.parseFeed.then(data => Feed.normalize(data));
   }
 }
 

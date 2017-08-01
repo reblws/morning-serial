@@ -33,7 +33,7 @@ class API {
     };
   }
 
-  constructor(baseURL, apiKey) {
+  constructor(baseURL, type, apiKey) {
     const axiosConfig = API.createAxiosConfig(baseURL, apiKey);
     this.fetch = API.fetch(axiosConfig);
   }

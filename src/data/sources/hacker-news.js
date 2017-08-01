@@ -1,9 +1,10 @@
 const API = require('./api');
+const types = require('../types');
 
 class HackerNews extends API {
   constructor() {
     const baseURL = 'https://hacker-news.firebaseio.com/v0/';
-    super(baseURL);
+    super(baseURL, types.HackerNews);
   }
 
   async getTopStories() {

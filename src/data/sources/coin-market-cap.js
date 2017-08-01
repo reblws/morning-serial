@@ -1,9 +1,10 @@
 const API = require('./api');
+const types = require('../types');
 
 class CoinMarketCap extends API {
   constructor() {
     const baseURL = 'https://api.coinmarketcap.com/v1/'
-    super(baseURL);
+    super(baseURL, types.CoinMarketCap);
   }
 
   getLatestTicker(limit = 5) {

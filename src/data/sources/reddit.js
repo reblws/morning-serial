@@ -1,9 +1,10 @@
 const API = require('./api');
+const types = require('../types');
 
 class Reddit extends API {
   constructor() {
     const baseURL = 'http://reddit.com/api/v1';
-    super(baseURL);
+    super(baseURL, types.Reddit);
   }
 
   getHotListings() {

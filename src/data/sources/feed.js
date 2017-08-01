@@ -1,7 +1,6 @@
 const FeedParser = require('feedparser-promised');
 
 class Feed {
-
   constructor(uri, type) {
     const options = {
       uri,

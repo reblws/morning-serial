@@ -8,7 +8,7 @@ const app = express();
 const PORT = process.env.PORT || 9999;
 
 const data = require('./data');
-
+const types = require('./data/types');
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: false }));

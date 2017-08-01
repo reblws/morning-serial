@@ -1,4 +1,5 @@
 const Feed = require('./feed');
+const types = require('../types');
 
 // All their articles are published at the same time so they'd apprear
 // grouped together

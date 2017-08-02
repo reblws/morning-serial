@@ -16,5 +16,6 @@ module.exports = {
   Reddit: 'reddit',
   Sidebar: 'sidebar',
   TheOutline: 'the-outline',
-  NewsAPI: 'news-api'
+  NewsAPI: 'news-api',
+  HackerNoon: 'hacker-noon',
 };

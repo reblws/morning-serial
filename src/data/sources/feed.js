@@ -54,7 +54,12 @@ class Feed {
    * @memberof Feed
    */
   get listing() {
-    return this.parseFeed().then(data => this.normalize(data));
+    return this.parseFeed()
+      .then(data => this.normalize(data))
+      .catch(e => {
+        console.error(e);
+        throw new Error(`Failed to fetch ${this.type} feed!`)
+      });
   }
 }
 

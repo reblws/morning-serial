@@ -22,24 +22,23 @@ r.connect({ host: 'localhost', port: 28015 })
   //   table.insert(feed).run(conn, logChanges);
   // });
 
-  /* conditional insert
-    Once we figure this out,
-  */
+
   .then(async conn => {
     const table = r.db('test').table('articles');
     const feed = await data.DesignerNews.listing;
-    table.insert(feed).do(
-      (doc) => {
-
-      }
-    )
   })
 
-r.table('players').insert(newData).do(
-    function (doc) {
-        return r.branch(doc('inserted').ne(0),
-            r.table('log').insert({time: r.now(), response: doc, result: 'ok'}),
-            r.table('log').insert({time: r.now(), response: doc, result: 'error'}))
-    }
-).run(conn, callback);
+
+/**
+ * Returns a function that creates a unique identifier for a given set of keys.
+ *
+ * @param {any} r - The rethinkDB object
+ * @param {any} connection - Instance of connection to rethinkdb
+ * @returns {Function}
+ */
+function promiseUniqueIdentifier(r, connection) {
+  const compositeString = type + link + Date.parse(date);
+  return (type, link, date) => r.uuid(compositeString).run(connection);
+}
+
 module.exports = r;

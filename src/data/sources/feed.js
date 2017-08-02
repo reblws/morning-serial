@@ -27,7 +27,7 @@ class Feed {
    * @memberof Feed
    */
   parseFeed() {
-    return new FeedParser(this.options);
+    return FeedParser.parse(this.options);
   }
 
   /**

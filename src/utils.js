@@ -1,5 +1,4 @@
 module.exports = {
-  formatType: function formatType(type) {
-    return type.replace(/\W/g, '');
-  }
+  toTableName: type => type.replace(/\W/g, ''),
+  valueSeq: object => Object.keys(object).map(key => object[key]),
 }

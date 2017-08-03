@@ -19,19 +19,22 @@ async function updateTable(conn, feedType, documents) {
   // Check if the table exists
   const feedTable = formatType(feedType);
   const availableTables = await r.tableList().run(conn);
+
+  // If table doesn't exist yet, create it based on the type of the
+  // Feed object
   if (!availableTables.includes(feedTable)) {
-    setupTable(conn, feedTable).then(results => console.log(results));
+    await setupTable(conn, feedTable).then(results => console.log(results));
   }
   const uuids = await Promise.all(promiseUUIDs(documents, conn));
   const documentsToInsert = documents.map(mergeUUIDs(uuids, conn));
   return r.table(feedTable).insert(documentsToInsert).run(conn);
 }
 
-function mergeUUIDs(uuids, conn) {
+function mergeUUIDs(conn, uuids) {
   return (doc, index) => Object.assign(doc, { uuid: uuids[index]});
 }
 
-function promiseUUIDs(documents, conn) {
+function promiseUUIDs(conn, documents) {
   return documents.map(({ type, link, date }) => {
     return promiseUniqueIdentifier(type, link, date, conn);
   });

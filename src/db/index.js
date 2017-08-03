@@ -1,7 +1,7 @@
 const r = require('rethinkdb');
 const data = require('../data');
 const config = require('./config');
-const { formatType } = require('../utils');
+const { toTableName } = require('../utils');
 
 function logChanges(err, result) {
   if (err) throw err;
@@ -12,12 +12,28 @@ const connection = r.connect(config);
 
 // Tables need to have no dash
 function setupTable(conn, table) {
-  return r.tableCreate(table, { primaryKey: 'uuid' }).run(conn);
+  return r.tableCreate(table, { primaryKey: 'uuid' })
+    .indexCreate('publishedAt')
+    .run(conn);
+}
+
+// Create a union
+function readTables(conn, ...types) {
+  const tableNames = types.map(toTableName);
+  return doTableUnion(...tableNames).limit(50).run(conn);
+}
+
+function doTableUnion(...tables) {
+  const table = r.table(tables[0]).orderBy(r.desc('publishedAt'));
+  const tablesLeft = tables.slice(1);
+  return tablesLeft.length < 1
+    ? table
+    : table.union(doTableUnion(tablesLeft), { interleave: 'publishedAt' });
 }
 
 async function updateTable(conn, feedType, documents) {
   // Check if the table exists
-  const feedTable = formatType(feedType);
+  const feedTable = toTableName(feedType);
   const availableTables = await r.tableList().run(conn);
 
   // If table doesn't exist yet, create it based on the type of the
@@ -65,8 +81,11 @@ function promiseUniqueIdentifier(conn, type, link, date) {
   return r.uuid(compositeString).run(conn);
 }
 
+// connection.then(conn => readTables(conn, 'designernews'));
+
 module.exports = {
   connection,
   setupTable,
   updateTable,
+  readTables,
 };

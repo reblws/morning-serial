@@ -25,8 +25,8 @@ async function updateTable(conn, feedType, documents) {
   if (!availableTables.includes(feedTable)) {
     await setupTable(conn, feedTable).then(results => console.log(results));
   }
-  const uuids = await Promise.all(promiseUUIDs(documents, conn));
-  const documentsToInsert = documents.map(mergeUUIDs(uuids, conn));
+  const uuids = await Promise.all(promiseUUIDs(conn, documents));
+  const documentsToInsert = documents.map(mergeUUIDs(conn, uuids));
   return r.table(feedTable).insert(documentsToInsert).run(conn);
 }
 
@@ -36,7 +36,7 @@ function mergeUUIDs(conn, uuids) {
 
 function promiseUUIDs(conn, documents) {
   return documents.map(({ type, link, date }) => {
-    return promiseUniqueIdentifier(type, link, date, conn);
+    return promiseUniqueIdentifier(conn ,type, link, date);
   });
 }
 
@@ -60,7 +60,7 @@ function promiseUUIDs(conn, documents) {
  * @param {any} connection - Instance of connection to rethinkdb
  * @returns {Function}
  */
-function promiseUniqueIdentifier(type, link, date, conn) {
+function promiseUniqueIdentifier(conn, type, link, date) {
   const compositeString = type + link + Date.parse(date);
   return r.uuid(compositeString).run(conn);
 }

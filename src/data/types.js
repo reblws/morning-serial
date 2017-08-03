@@ -7,7 +7,7 @@ module.exports = {
   FiveThirtyEight: 'five-thirty-eight',
   AVClub: 'av-club',
   BetaList: 'beta-list',
-  CoinMarketCap: 'coin-market-cap',
+  // CoinMarketCap: 'coin-market-cap',
   DesignerNews: 'designer-news',
   HackerNews: 'hacker-news',
   IndieHackers: 'indie-hackers',
@@ -16,6 +16,6 @@ module.exports = {
   Reddit: 'reddit',
   Sidebar: 'sidebar',
   TheOutline: 'the-outline',
-  NewsAPI: 'news-api',
+  // NewsAPI: 'news-api',
   HackerNoon: 'hacker-noon',
 };

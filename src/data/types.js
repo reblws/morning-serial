@@ -4,7 +4,7 @@
   based on these strings.
 */
 module.exports = {
-  538: '538',
+  FiveThirtyEight: 'five-thirty-eight',
   AVClub: 'av-club',
   BetaList: 'beta-list',
   CoinMarketCap: 'coin-market-cap',

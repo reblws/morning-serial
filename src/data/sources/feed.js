@@ -1,5 +1,5 @@
 const FeedParser = require('feedparser-promised');
-
+const { toHumanName, hostName } = require('../../utils');
 /**
  * An RSS or ATOM feed.
  *
@@ -13,11 +13,15 @@ class Feed {
    * @memberof Feed
    */
   constructor(uri, type) {
+    const host = hostName(uri);
     this.options = {
       uri,
       timeout: 3000,
     }
+    this.host = host;
+    this.name = toHumanName(type);
     this.type = type;
+    this.faviconURL = `https://icons.better-idea.org/icon?url=${host}&size=80..120..200`;
   }
 
   /**

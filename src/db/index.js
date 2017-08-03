@@ -28,7 +28,7 @@ function doTableUnion(...tables) {
   const tablesLeft = tables.slice(1);
   return tablesLeft.length < 1
     ? table
-    : table.union(doTableUnion(tablesLeft), { interleave: 'publishedAt' });
+    : table.union(doTableUnion(...tablesLeft), { interleave: r.desc('publishedAt') });
 }
 
 async function updateTable(conn, feedType, documents) {
@@ -52,22 +52,9 @@ function mergeUUIDs(conn, uuids) {
 
 function promiseUUIDs(conn, documents) {
   return documents.map(({ type, link, date }) => {
-    return promiseUniqueIdentifier(conn ,type, link, date);
+    return promiseUniqueIdentifier(conn, type, link, date);
   });
 }
-
-// Map function for adding uuids to documents before table
-// insert
-/* This is problematic. It's not good to combine map functions
-  with async methods
-*/
-// async function uuids(conn) {
-//   return async function addUUID(doc) {
-//     const { type, link, date } = doc;
-//     const uuid = await promiseUniqueIdentifier(type, link, date, conn);
-//     return Object.assign({}, doc, { uuid });
-//   }
-// }
 
 /**
  * Returns a function that creates a unique identifier for a given set of keys.

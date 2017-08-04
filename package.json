@@ -11,7 +11,9 @@
     "url": "^0.11.0"
   },
   "scripts": {
-    "start": "nodemon src/server.js"
+    "start": "npm-run-all --parallel watch:server watch:build",
+    "watch:build": "webpack --watch",
+    "watch:server": "nodemon \"./dist/server.js\" --watch \"./dist\""
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
@@ -22,6 +24,8 @@
     "css-loader": "^0.28.4",
     "extract-text-webpack-plugin": "^3.0.0",
     "json-loader": "^0.5.7",
-    "webpack": "^3.4.1"
+    "npm-run-all": "^4.0.2",
+    "webpack": "^3.4.1",
+    "webpack-node-externals": "^1.6.0"
   }
 }

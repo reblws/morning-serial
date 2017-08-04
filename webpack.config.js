@@ -19,11 +19,11 @@ var commonLoaders = [
   }
 ];
 
-module.exports = [
-  {
-    entry: './src/server.js',
+const config = [
+   {
+    entry: __dirname + '/src/server.js',
     output: {
-      path: './dist',
+      path: __dirname + '/dist',
       filename: 'server.js',
       libraryTarget: 'commonjs2',
       publicPath: '/'
@@ -43,15 +43,19 @@ module.exports = [
       loaders: [
         {
           test: /\.js$/,
-          loader: 'babel'
+          loader: 'babel-loader',
+          // add preset here
+          options: {
+            presets: ['react'],
+          },
         }
       ].concat(commonLoaders)
     }
   },
   {
-    entry: './src/app/browser.js',
+    entry: __dirname + '/src/app/browser.js',
     output: {
-      path: './dist/assets',
+      path: __dirname + '/dist/assets',
       publicPath: '/',
       filename: 'bundle.js'
     },
@@ -61,20 +65,23 @@ module.exports = [
       })
     ]),
     module: {
-      loaders: [
+      rules: [
         {
-          test: /\.js$/,
+          test: /\.jsx?$/,
           exclude: /node_modules/,
-          loader: 'babel'
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ["react"],
+            },
+          }
         },
-        {
-          test: /\.scss$/,
-          loader: ExtractTextPlugin.extract('css!sass')
-        }
       ]
     },
     resolve: {
-      extensions: ['', '.js', '.jsx']
+      extensions: ['.js', '.jsx']
     }
   }
 ];
+
+module.exports = config;

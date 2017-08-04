@@ -1,19 +1,34 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-// const axios = require('axios');
-// const jsonfile = require('jsonfile');
+const React = require('react') ;
+const { renderToString } = require('react-dom/server');
+
+const template = require('./template')
+const App = require('./app').default;
 const { connection, readTables } = require('./db');
 const data = require('./data');
 const { valueSeq } = require('./utils');
-const app = express();
+
+const server = express();
 const PORT = process.env.PORT || 9999;
 
 
 // Middleware
-app.use(bodyParser.urlencoded({ extended: false }));
+server.use('/assets', express.static('assets'));
+server.use(bodyParser.urlencoded({ extended: false }));
 
 // Routes
-app.get('/api/feeds', async (request, response) => {
+server.get('/', (_, response) => {
+  const isMobile = 'hi';
+  const appString = renderToString(<App isMobile={isMobile} />);
+  response.send(template({
+    body: appString,
+    title: 'Hello World',
+  }));
+});
+
+
+server.get('/api/feeds', async (request, response) => {
   const { sources } = request.query;
   // parse the query
   // Going to assume they are the string values from ./data/types
@@ -29,14 +44,14 @@ app.get('/api/feeds', async (request, response) => {
 });
 
 // Show the available sources
-app.get('/api/sources', (_, response) => {
+server.get('/api/sources', (_, response) => {
   const sources = valueSeq(data);
   response.json(
     sources.map(({ name, faviconURL, host }) => ({ name, faviconURL, host })),
   );
 });
 
-app.listen(PORT);
+server.listen(PORT);
 console.log('Listening to ', PORT);
 
 

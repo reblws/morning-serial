@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { toHumanName, hostName } = require('../../utils');
+const { toHumanName, hostName, findFavicon } = require('../../utils');
 // Prototype for sources
 class API {
   static fetch(axiosConfig) {
@@ -38,7 +38,7 @@ class API {
     this.fetch = API.fetch(axiosConfig);
     this.name = toHumanName(type);
     this.host = hostName(uri);
-    this.faviconURL = `https://icons.better-idea.org/icon?url=${hostName(uri)}&size=80..120..200`
+    this.faviconURL = findFavicon(uri);
   }
 }
 

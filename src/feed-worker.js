@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const data = require('./data');
 const Feed = require('./data/sources/feed');
 const db = require('./db');

@@ -1,7 +1,7 @@
 // app/browser.js
 
-const React = require('react');
-const { render } = require('react-dom');
-const App = require('./index');
+import React, { Component } from 'react';
+import { render } from 'react-dom';
+import App from './index';
 
-render(<App />, document.getElementById('root'));
+render(<App {...window.__APP_INITIAL_STATE__}/>, document.getElementById('root'));

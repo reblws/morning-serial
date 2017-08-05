@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const csp = require('helmet-csp');
 const React = require('react') ;
 const { renderToString } = require('react-dom/server');
 
@@ -12,18 +13,45 @@ const { valueSeq } = require('./utils');
 const server = express();
 const PORT = process.env.PORT || 9999;
 
-
 // Middleware
-server.use('/assets', express.static('assets'));
+const cspSettings = csp({
+  directives: {
+    defaultSrc: [
+      "'self'",
+    ],
+    scriptSrc: [
+      "'self'",
+      "'unsafe-inline'",
+      "'unsafe-eval'",
+    ],
+  },
+  setAllHeaders: true,
+});
+
+server.use(cspSettings);
+server.use('/assets', express.static('dist/assets'));
 server.use(bodyParser.urlencoded({ extended: false }));
 
+async function getLatestArticles(conn, feeds) {
+  try {
+    const conn = await connection;
+    const latestArticles = await readTables(conn, ...feeds);
+    return latestArticles;
+  } catch(e) {
+    throw e;
+  }
+}
+
 // Routes
-server.get('/', (_, response) => {
-  const isMobile = 'hi';
-  const appString = renderToString(<App isMobile={isMobile} />);
+server.get('/', cspSettings, (_, response) => {
+  const initialState = {
+    fetched: true,
+  };
+  const appString = renderToString(<App fetched={initialState.fetched} />);
   response.send(template({
     body: appString,
     title: 'Hello World',
+    initialState: JSON.stringify(initialState),
   }));
 });
 
@@ -35,9 +63,9 @@ server.get('/api/feeds', async (request, response) => {
   const feeds = sources.split(/\s/);
   try {
     const conn = await connection;
-    const latestArticles = await readTables(conn, ...feeds);
+    const latestArticles = await getLatestArticles(conn, ...feeds);
     response.json(latestArticles);
-  } catch (e) {
+  } catch(e) {
     response.sendStatus(500);
     throw e;
   }

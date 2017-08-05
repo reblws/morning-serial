@@ -3,11 +3,11 @@ import React, { Component } from 'react';
 
 export default class App extends Component {
   render() {
-    const { isMobile } = this.props;
+    const { fetched } = this.props;
     return (
       <div>
         <h1>hello world</h1>
-        <p>{isMobile}</p>
+        <p>{fetched}</p>
       </div>
     );
   }

@@ -38,6 +38,7 @@ class API {
     this.fetch = API.fetch(axiosConfig);
     this.name = toHumanName(type);
     this.host = hostName(uri);
+    this.type = type;
     this.faviconURL = findFavicon(uri);
   }
 }

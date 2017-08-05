@@ -6,8 +6,8 @@ function capitalizeFirstLetter(letter, index) {
     : letter;
 }
 
-function capitalize(str) {
-  return str.split('').map(capitalizeFirstLetter).join('');
+function capitalize(word) {
+  return word.split('').map(capitalizeFirstLetter).join('');
 }
 
 module.exports = {

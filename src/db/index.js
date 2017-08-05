@@ -18,8 +18,11 @@ function setupTable(conn, table) {
 }
 
 // Create a union
-function readTables(conn, ...types) {
-  const tableNames = types.map(toTableName);
+async function readTables(conn, ...types) {
+  const availableTables = await r.tableList().run(conn);
+  const tableNames = types.map(toTableName)
+    .filter(table => availableTables.includes(table));
+  // Filter the tables we don't have
   return doTableUnion(...tableNames).limit(50).run(conn);
 }
 

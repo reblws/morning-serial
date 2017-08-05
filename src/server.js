@@ -85,7 +85,7 @@ server.get('/api/feeds', async (request, response) => {
   const { sources } = request.query;
   // parse the query
   // Going to assume they are the string values from ./data/types
-  const feeds = sources.split(/\s/);
+  const feeds = sources.split('+');
   try {
     const conn = await connection;
     const latestArticles = await getLatestArticles(conn, ...feeds);

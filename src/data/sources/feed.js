@@ -12,8 +12,8 @@ class Feed {
    * @param {string} type - Dashed name of the site the feed came from.
    * @memberof Feed
    */
-  constructor(uri, type) {
-    const host = hostName(uri);
+  constructor(uri, type, baseHost) {
+    const host = baseHost || hostName(uri);
     this.options = {
       uri,
       timeout: 3000,

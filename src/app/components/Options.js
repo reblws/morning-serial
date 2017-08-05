@@ -3,7 +3,7 @@ import React from 'react';
 export default function Options({
   availableSources,
   activeFeeds,
-  changeActiveFeed
+  toggleActiveFeed
 }) {
   const styles = {
     active: {
@@ -15,14 +15,16 @@ export default function Options({
       maxWidth: 20,
     },
   };
+  // TODO: filter out all feed burner links, need to provide the real url back
+  //       in data folder
   const sourceToggles = availableSources.map(({ name, faviconURL, type }) => {
     return (
       <input
         key={type}
         type="image"
         src={faviconURL}
-        onClick={changeActiveFeed}
-        alt={name}
+        onClick={toggleActiveFeed}
+        alt={`Toggle ${name}`}
         data-feed={type}
         style={activeFeeds.includes(type) ? styles.active : styles.inactive}
       />

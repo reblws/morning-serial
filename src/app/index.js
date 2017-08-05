@@ -18,21 +18,22 @@ export default class App extends Component {
   }
 
   toggleActiveFeed(event) {
-    const { feed } = event.target.data
+    const { feed } = event.target.dataset;
     const { activeFeeds } = this.state;
     const newActiveFeeds = activeFeeds.includes(feed)
       ? activeFeeds.filter(x => x !== feed)
       : [...activeFeeds, feed];
     // Need to make our api request here
-    api.get('/sources', {
-      query: {
+    // TODO: handle when someone removes ALL feeds
+    api.get('/feeds', {
+      params: {
         sources: newActiveFeeds.join('+'),
       },
     })
-      .then(articles => {
+      .then(response => {
         this.setState({
           activeFeeds: newActiveFeeds,
-          latestArticles: articles,
+          latestArticles: response.data,
         });
       });
   }

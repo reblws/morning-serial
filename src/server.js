@@ -28,6 +28,10 @@ const cspSettings = csp({
     imgSrc: [
       "*",
     ],
+    styleSrc: [
+      "'self'",
+      "'unsafe-inline'",
+    ]
   },
 });
 

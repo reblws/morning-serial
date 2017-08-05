@@ -1,5 +1,5 @@
 module.exports = {
   host: 'localhost',
-  port: 28015,
+  port: process.env.RETHINKDB_PORT,
   db: 'test',
 }

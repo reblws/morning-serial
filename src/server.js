@@ -8,6 +8,7 @@ const template = require('./template')
 const App = require('./app').default;
 const { connection, readTables } = require('./db');
 const data = require('./data');
+const types = require('./data/types');
 const { valueSeq } = require('./utils');
 
 const server = express();
@@ -25,14 +26,13 @@ const cspSettings = csp({
       "'unsafe-eval'",
     ],
   },
-  setAllHeaders: true,
 });
 
 server.use(cspSettings);
 server.use('/assets', express.static('dist/assets'));
 server.use(bodyParser.urlencoded({ extended: false }));
 
-async function getLatestArticles(conn, feeds) {
+async function getLatestArticles(conn, ...feeds) {
   try {
     const conn = await connection;
     const latestArticles = await readTables(conn, ...feeds);
@@ -45,9 +45,9 @@ async function getLatestArticles(conn, feeds) {
 // Routes
 server.get('/', cspSettings, (_, response) => {
   const initialState = {
-    fetched: true,
+    fetched: "hey what's up hello",
   };
-  const appString = renderToString(<App fetched={initialState.fetched} />);
+  const appString = renderToString(<App {...initialState} />);
   response.send(template({
     body: appString,
     title: 'Hello World',
@@ -77,6 +77,29 @@ server.get('/api/sources', (_, response) => {
   response.json(
     sources.map(({ name, faviconURL, host }) => ({ name, faviconURL, host })),
   );
+});
+
+server.get('/api/sources/:source', async (request, response) => {
+  const { source } = request.params;
+  try {
+    const conn = await connection;
+    const latestArticles = await getLatestArticles(conn, source);
+    response.json(latestArticles)
+  } catch(e) {
+    response.sendStatus(400);
+    throw e;
+  }
+})
+
+// Expose the favicons
+server.get('/api/sources/:source/favicon', (request, response) => {
+  const { source } = request.params;
+  const { faviconURL } = valueSeq(data).filter(src => src.type === source)[0];
+  if (!faviconURL) {
+    response.sendStatus(400);
+    return;
+  }
+  response.redirect(faviconURL);
 });
 
 server.listen(PORT);

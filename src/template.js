@@ -1,6 +1,6 @@
 // src/template.js
 
-module.exports = function html({ body, title }) {
+module.exports = function html({ body, title, initialState }) {
   return `
     <!DOCTYPE html>
     <html>
@@ -13,9 +13,9 @@ module.exports = function html({ body, title }) {
 
       <body>
         <div id="root">${body}</div>
+        <script src="/assets/bundle.js"></script>
       </body>
 
-      <script src="/assets/bundle.js"></script>
     </html>
   `;
 };

@@ -11,7 +11,6 @@ function updateAllFeeds(sources, db) {
   feeds.forEach(feed => updateFeed(feed, db));
 }
 
-
 function updateFeed(feed, db) {
   return db.connection.then(async conn => {
     try {

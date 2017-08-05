@@ -25,6 +25,9 @@ const cspSettings = csp({
       "'unsafe-inline'",
       "'unsafe-eval'",
     ],
+    imgSrc: [
+      "*",
+    ],
   },
 });
 
@@ -43,16 +46,34 @@ async function getLatestArticles(conn, ...feeds) {
 }
 
 // Routes
-server.get('/', cspSettings, (_, response) => {
-  const initialState = {
-    fetched: "hey what's up hello",
-  };
-  const appString = renderToString(<App {...initialState} />);
-  response.send(template({
-    body: appString,
-    title: 'Hello World',
-    initialState: JSON.stringify(initialState),
-  }));
+// Main route, serves up react
+server.get('/', cspSettings, async (_, response) => {
+  const defaultFeeds = [
+    types.DesignerNews,
+    types.MacRumors,
+    types.BetaList,
+    types.TheOutline,
+  ];
+
+  try {
+    const conn = await connection;
+    const latestArticles = await getLatestArticles(conn, ...defaultFeeds);
+    const initialState = {
+      activeFeeds: defaultFeeds,
+      latestArticles,
+      availableSources: valueSeq(data).map(({ name, faviconURL, host, type }) => (
+        { name, faviconURL, host, type }
+      )),
+    };
+    const appString = renderToString(<App {...initialState} />);
+    response.send(template({
+      body: appString,
+      title: 'Hello World',
+      initialState: JSON.stringify(initialState),
+    }));
+  } catch(e) {
+    throw e;
+  }
 });
 
 
@@ -75,7 +96,7 @@ server.get('/api/feeds', async (request, response) => {
 server.get('/api/sources', (_, response) => {
   const sources = valueSeq(data);
   response.json(
-    sources.map(({ name, faviconURL, host }) => ({ name, faviconURL, host })),
+    sources.map(({ name, faviconURL, host, type }) => ({ name, faviconURL, host,type })),
   );
 });
 

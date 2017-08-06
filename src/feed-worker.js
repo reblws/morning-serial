@@ -7,9 +7,7 @@ const { valueSeq } = require('./utils');
 const sources = valueSeq(data);
 
 function updateAllFeeds(sources, db) {
-  // Check only ATOM/RSS feeds for now
-  const feeds = sources.filter(source => Feed.prototype.isPrototypeOf(source));
-  feeds.forEach(feed => updateFeed(feed, db));
+  sources.forEach(feed => updateFeed(feed, db));
 }
 
 function updateFeed(feed, db) {
@@ -17,7 +15,7 @@ function updateFeed(feed, db) {
     try {
       const docs = await feed.listing;
       return db.updateTable(conn, feed.type, docs)
-        .then(results => console.log(results, feed.type));
+        .then(results => console.log(results.inserted, 'Inserted', feed.type));
     } catch(e) {
       throw e;
     }

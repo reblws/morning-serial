@@ -4,7 +4,20 @@ const types = require('../types');
 class HackerNews extends API {
   constructor() {
     const baseURL = 'https://hacker-news.firebaseio.com/v0/';
-    super(baseURL, types.HackerNews);
+    super(baseURL, types.HackerNews, 'https://news.ycombinator.com/');
+    this.normalize = this.normalize.bind(this);
+  }
+
+  normalize(data) {
+  // Need to time * 1000 for unix time conversion
+    return data.map(({ title, url, time }) => (
+      {
+        title,
+        link: url,
+        publishedAt: new Date(time * 1000),
+        type: this.type,
+      }
+    ));
   }
 
   async getTopStories() {
@@ -20,7 +33,7 @@ class HackerNews extends API {
   }
 
   get listing() {
-    return this.getTopStories();
+    return this.getTopStories().then(this.normalize);
   }
 }
 

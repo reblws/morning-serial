@@ -33,13 +33,14 @@ class API {
     };
   }
 
-  constructor(uri, type, apiKey) {
+  constructor(uri, type, baseHost, apiKey) {
     const axiosConfig = API.createAxiosConfig(uri, apiKey);
+    const host = baseHost || hostName(uri);
     this.fetch = API.fetch(axiosConfig);
     this.name = toHumanName(type);
-    this.host = hostName(uri);
+    this.host = host;
     this.type = type;
-    this.faviconURL = findFavicon(uri);
+    this.faviconURL = findFavicon(host);
   }
 }
 

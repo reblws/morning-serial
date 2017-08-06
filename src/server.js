@@ -57,6 +57,8 @@ server.get('/', cspSettings, async (_, response) => {
     types.MacRumors,
     types.BetaList,
     types.TheOutline,
+    types.HackerNews,
+    types.Sidebar,
   ];
 
   try {
@@ -104,6 +106,7 @@ server.get('/api/sources', (_, response) => {
   );
 });
 
+// Show the sources listing, but as the records from the db
 server.get('/api/sources/:source', async (request, response) => {
   const { source } = request.params;
   try {
@@ -114,7 +117,15 @@ server.get('/api/sources/:source', async (request, response) => {
     response.sendStatus(400);
     throw e;
   }
-})
+});
+
+// Just get the sources listing, rather than from the db, this is for debugging
+server.get('/api/sources/:source/listing', (request, response) => {
+  const { source } = request.params;
+  valueSeq(data).filter(src => src.type === source)[0].listing
+    .then(results => response.json(results))
+    .catch(err => console.error(err));
+});
 
 // Expose the favicons
 server.get('/api/sources/:source/favicon', (request, response) => {

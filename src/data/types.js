@@ -4,18 +4,20 @@
   based on these strings.
 */
 module.exports = {
+  /* Feeds */
   FiveThirtyEight: 'five-thirty-eight',
   AVClub: 'av-club',
   BetaList: 'beta-list',
   // CoinMarketCap: 'coin-market-cap',
   DesignerNews: 'designer-news',
-  HackerNews: 'hacker-news',
   IndieHackers: 'indie-hackers',
   MacRumors: 'mac-rumors',
   ProductHunt: 'product-hunt',
-  Reddit: 'reddit',
-  Sidebar: 'sidebar',
   TheOutline: 'the-outline',
-  // NewsAPI: 'news-api',
   HackerNoon: 'hacker-noon',
+  /* APIs */
+  HackerNews: 'hacker-news',
+  // Reddit: 'reddit',
+  Sidebar: 'sidebar',
+  // NewsAPI: 'news-api',
 };

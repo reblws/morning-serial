@@ -10,10 +10,10 @@ class HackerNews extends API {
 
   normalize(data) {
   // Need to time * 1000 for unix time conversion
-    return data.map(({ title, url, time }) => (
+    return data.map(({ title, url, time, id }) => (
       {
         title,
-        link: url,
+        link: url || `https://news.ycombinator.com/item?=${id}`,
         publishedAt: new Date(time * 1000),
         type: this.type,
       }

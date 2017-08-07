@@ -5,7 +5,7 @@ const React = require('react') ;
 const { renderToString } = require('react-dom/server');
 
 const template = require('./template')
-const App = require('./app').default;
+const App = require('./view').default;
 const { connection, readTables } = require('./db');
 const data = require('./data');
 const types = require('./data/types');

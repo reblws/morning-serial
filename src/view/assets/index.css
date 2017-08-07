@@ -1,0 +1,11 @@
+ @import 'normalize.css';
+
+:root {
+  /* Color set */
+  --mainColor: red;
+  font-family: system-ui;
+}
+
+.text {
+  color: var(--mainColor);
+}

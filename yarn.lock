@@ -1239,6 +1239,10 @@ css-color-names@0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/css-color-names/-/css-color-names-0.0.4.tgz#808adc2e79cf84738069b646cb20ec27beb629e0"
 
+css-font-weight-names@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/css-font-weight-names/-/css-font-weight-names-0.2.1.tgz#5710d485ad295f6b3f1ceec41f882e324a46b516"
+
 css-loader@^0.28.4:
   version "0.28.4"
   resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-0.28.4.tgz#6cf3579192ce355e8b38d5f42dd7a1f2ec898d0f"
@@ -3126,6 +3130,14 @@ postcss-font-variant@^3.0.0:
   dependencies:
     postcss "^6.0.1"
 
+postcss-font-weights@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/postcss-font-weights/-/postcss-font-weights-4.0.0.tgz#c01014047f62a3d51d3f283c0f53f1a49ca1446f"
+  dependencies:
+    css-font-weight-names "^0.2.1"
+    postcss "^6.0.1"
+    postcss-value-parser "^3.3.0"
+
 postcss-image-set-polyfill@^0.3.5:
   version "0.3.5"
   resolved "https://registry.yarnpkg.com/postcss-image-set-polyfill/-/postcss-image-set-polyfill-0.3.5.tgz#0f193413700cf1f82bd39066ef016d65a4a18181"
@@ -3308,6 +3320,12 @@ postcss-ordered-values@^2.1.0:
     postcss "^5.0.4"
     postcss-value-parser "^3.0.1"
 
+postcss-overflow@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/postcss-overflow/-/postcss-overflow-1.1.5.tgz#0a4052bb4e574e57f0b99319ec6687bfc6d52abe"
+  dependencies:
+    postcss "^6.0.1"
+
 postcss-pseudo-class-any-link@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/postcss-pseudo-class-any-link/-/postcss-pseudo-class-any-link-4.0.0.tgz#9152a0613d3450720513e8892854bae42d0ee68e"
@@ -3369,6 +3387,63 @@ postcss-selector-parser@^2.0.0, postcss-selector-parser@^2.2.2, postcss-selector
     flatten "^1.0.2"
     indexes-of "^1.0.1"
     uniq "^1.0.1"
+
+postcss-short-border-radius@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/postcss-short-border-radius/-/postcss-short-border-radius-2.0.0.tgz#a87b1d60ac433222963945d90e2b7a5b3bc24453"
+  dependencies:
+    postcss "^6.0.1"
+
+postcss-short-border@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/postcss-short-border/-/postcss-short-border-3.0.0.tgz#e56379c4a2f5327d81db61acd42bc6025dfcb9d9"
+  dependencies:
+    postcss "^6.0.1"
+
+postcss-short-color@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/postcss-short-color/-/postcss-short-color-3.0.0.tgz#874e9af3301cf5f5413d7bd235caf1dc0105ac38"
+  dependencies:
+    postcss "^6.0.1"
+
+postcss-short-font-size@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/postcss-short-font-size/-/postcss-short-font-size-4.0.0.tgz#750a4411a776e9deecdc90b9e8d82226ef79cee9"
+  dependencies:
+    postcss "^6.0.1"
+
+postcss-short-position@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/postcss-short-position/-/postcss-short-position-3.0.0.tgz#1874105a4c8c768fe57bbb8ab5f048a5431293d4"
+  dependencies:
+    postcss "^6.0.1"
+
+postcss-short-size@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/postcss-short-size/-/postcss-short-size-3.0.0.tgz#0905e11c7c14d42551260407894f57466c102fbc"
+  dependencies:
+    postcss "^6.0.1"
+
+postcss-short-spacing@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/postcss-short-spacing/-/postcss-short-spacing-3.0.0.tgz#360c5e496fca1250aeeac5988d82e7c409352ca0"
+  dependencies:
+    postcss "^6.0.1"
+
+postcss-short@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/postcss-short/-/postcss-short-4.1.0.tgz#179d72f1980768c885914d2f8c0a511e3335303a"
+  dependencies:
+    postcss "^6.0.1"
+    postcss-font-weights "^4.0.0"
+    postcss-overflow "^1.1.5"
+    postcss-short-border "^3.0.0"
+    postcss-short-border-radius "^2.0.0"
+    postcss-short-color "^3.0.0"
+    postcss-short-font-size "^4.0.0"
+    postcss-short-position "^3.0.0"
+    postcss-short-size "^3.0.0"
+    postcss-short-spacing "^3.0.0"
 
 postcss-svgo@^2.1.1:
   version "2.1.6"

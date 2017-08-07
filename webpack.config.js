@@ -114,15 +114,7 @@ const cssConfig = {
                 importLoaders: 1,
               }
             },
-            {
-              loader: 'postcss-loader',
-              options: {
-                plugins: (loader) => [
-                  require('postcss-import')(),
-                  require('postcss-cssnext')(),
-                ]
-              }
-            },
+            'postcss-loader',
           ]
         }),
       },

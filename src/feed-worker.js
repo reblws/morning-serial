@@ -6,20 +6,20 @@ const { valueSeq } = require('./utils');
 
 const sources = valueSeq(data);
 
-function updateAllFeeds(sources, db) {
-  sources.forEach(feed => updateFeed(feed, db));
+function updateAllFeeds(conn, sources) {
+  sources.forEach(feed => updateFeed(conn, feed));
 }
 
-function updateFeed(feed, db) {
-  return db.connection.then(async conn => {
-    try {
-      const docs = await feed.listing;
-      return db.updateTable(conn, feed.type, docs)
-        .then(results => console.log(results.inserted, 'Inserted', feed.type));
-    } catch(e) {
-      throw e;
-    }
-  });
+async function updateFeed(conn, feed) {
+  try {
+    const docs = await feed.listing;
+    return db.updateTable(conn, feed.type, docs)
+      .then(results => console.log(results.inserted, 'Inserted', feed.type));
+  } catch(e) {
+    throw e;
+  }
 }
 
-updateAllFeeds(sources, db);
+db.connection
+  .then(conn => db.setupAllTables(conn))
+  .then(conn => updateAllFeeds(conn, sources));

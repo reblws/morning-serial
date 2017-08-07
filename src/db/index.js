@@ -1,20 +1,28 @@
 const r = require('rethinkdb');
 const data = require('../data');
+const types = require('../data/types');
 const config = require('./config');
-const { toTableName } = require('../utils');
+const { toTableName, valueSeq } = require('../utils');
 
 function logChanges(err, result) {
   if (err) throw err;
   console.log(JSON.stringify(result, null, 2));
 }
 
-const connection = r.connect(config);
+
+// Main setup function
+async function setupAllTables(conn) {
+  const availableTables = await r.tableList().run(conn);
+  const uncreatedTables = valueSeq(types).map(toTableName)
+    .filter(table => !availableTables.includes(table));
+  uncreatedTables.forEach(table => setupTable(conn, table));
+  return conn;
+}
 
 // Tables need to have no dash
 function setupTable(conn, table) {
-  return r.tableCreate(table, { primaryKey: 'uuid' })
-    .indexCreate('publishedAt')
-    .run(conn);
+  r.tableCreate(table, { primaryKey: 'uuid' }).run(conn);
+  r.table(table).indexCreate('publishedAt').run(conn);
 }
 
 // Create a union
@@ -37,13 +45,7 @@ function doTableUnion(...tables) {
 async function updateTable(conn, feedType, documents) {
   // Check if the table exists
   const feedTable = toTableName(feedType);
-  const availableTables = await r.tableList().run(conn);
 
-  // If table doesn't exist yet, create it based on the type of the
-  // Feed object
-  if (!availableTables.includes(feedTable)) {
-    await setupTable(conn, feedTable).then(results => console.log(results));
-  }
   const uuids = await Promise.all(promiseUUIDs(conn, documents));
   const documentsToInsert = documents.map(mergeUUIDs(conn, uuids));
   return r.table(feedTable).insert(documentsToInsert).run(conn);
@@ -72,10 +74,11 @@ function promiseUniqueIdentifier(conn, type, link, date) {
 }
 
 // connection.then(conn => readTables(conn, 'designernews'));
+const connection = r.connect(config);
 
 module.exports = {
   connection,
-  setupTable,
+  setupAllTables,
   updateTable,
   readTables,
 };

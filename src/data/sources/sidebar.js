@@ -14,7 +14,7 @@ class Sidebar extends API {
     return data.map(({ headline, url, date }) => (
       {
         title: headline,
-        publishedAt: date,
+        publishedAt: new Date(date),
         link: valueSeq(queryString.parse(url))[0],
         type: this.type,
       }

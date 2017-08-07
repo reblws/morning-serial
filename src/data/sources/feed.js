@@ -44,7 +44,7 @@ class Feed {
   normalize(data) {
     const toSchema = ({ title, date, link }) => ({
       title,
-      publishedAt: date,
+      publishedAt: new Date(date),
       link,
       type: this.type,
     });

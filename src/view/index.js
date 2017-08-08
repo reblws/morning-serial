@@ -44,7 +44,13 @@ export default class App extends Component {
   }
 
   render() {
-    const { latestArticles, availableSources, activeFeeds } = this.state;
+    const {
+      latestArticles,
+      availableSources,
+      activeFeeds,
+    } = this.state;
+    const getFavicon = type =>
+      availableSources.filter(src => src.type === type)[0].faviconURL;
     return (
       <main>
         <header>
@@ -56,7 +62,10 @@ export default class App extends Component {
             activeFeeds={activeFeeds}
             toggleActiveFeed={this.toggleActiveFeed}
           />
-          <Listing latestArticles={latestArticles} />
+          <Listing
+            latestArticles={latestArticles}
+            getFavicon={getFavicon}
+          />
         </div>
       </main>
     );
@@ -67,7 +76,7 @@ App.propTypes = {
   activeFeeds: PropTypes.arrayOf(PropTypes.string).isRequired,
   latestArticles: PropTypes.arrayOf(PropTypes.shape({
     link: PropTypes.string.isRequired,
-    publishedAt: PropTypes.string.isRequired,
+    publishedAt: PropTypes.instanceOf(Date).isRequired,
     title: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     uuid: PropTypes.string.isRequired,

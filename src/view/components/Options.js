@@ -9,7 +9,7 @@ Options.propTypes = {
     host: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
   })).isRequired,
-  toggleActiveFeed: PropTypes.function.isRequired,
+  toggleActiveFeed: PropTypes.func.isRequired,
 };
 
 export default function Options({
@@ -43,7 +43,7 @@ export default function Options({
     );
   });
   return (
-    <div>
+    <div className="options">
       Feeds: {sourceToggles}
     </div>
   );

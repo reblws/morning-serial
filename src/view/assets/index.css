@@ -3,13 +3,13 @@
 :root {
   /* Color set */
   --foregroundColor: #000;
-  --backgroundColor: #183F63;
-  background-color: var(--backgroundColor);
+  --backgroundColor: #0828CC;
 }
 
 html {
   font-family: 'HK Grotesk';
   font-weight: 500;
+  background-color: var(--backgroundColor);
 }
 
 main {
@@ -20,8 +20,9 @@ main {
 }
 
 header {
-  text-align: center;
+  font-family: 'Zilla Slab', sans-serif;
   font-size: 2em;
+  text-align: center;
 }
 
 a {
@@ -39,16 +40,35 @@ a:hover {
 }
 
 .article {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0.85em *;
   color: var(--foregroundColor);
-  margin: 0.5em;
+}
+
+.favicon {
+  border-radius: 50px;
+  size: 32px;
+  padding: * 1em;
 }
 
 .article a {
   margin: 0;
-  font-size: 1.25em;
+  font-size: 1.15em;
 }
 
-.article p {
+.article svg {
+  /* font-weight: 400; */
+  vertical-align: middle;
+}
+
+.info {
   margin: 0;
+  font-size: 0.85em;
+  font-weight: lighter;
 }
 
+.options {
+  text-align: center;
+}

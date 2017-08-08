@@ -1,27 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { Clock } from 'react-feather';
 
 Article.propTypes = {
   title: PropTypes.string.isRequired,
-  publishedAt: PropTypes.string.isRequired,
+  publishedAt: PropTypes.instanceOf(Date).isRequired,
   link: PropTypes.string.isRequired,
+  // type: PropTypes.string.isRequired,
+  favicon: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
-}
+};
 
 export default function Article({
   title,
   publishedAt,
   link,
+  favicon,
   type,
 }) {
-  const favicon = href => `https://icons.better-idea.org/icon?url=${href}&size=80..120..200`;
   return (
     <div className="article">
-      <img class="favicon" src={favicon(type)}>
+      <div className="media">
+        <img className="favicon" src={favicon} alt={type} />
+      </div>
       <div>
         <a href={link}>{title}</a>
-        <p>Published: {moment(publishedAt).fromNow()}</p>
+        <p className="info"><Clock size={12} /> {moment(publishedAt).fromNow()}</p>
       </div>
     </div>
   );

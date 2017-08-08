@@ -4,14 +4,14 @@ const fontDir = path.join(__dirname, 'dist', 'assets', 'fonts');
 const hkGroteskPath = font => ({
   url: {
     otf: path.join(fontDir, `HKGrotesk-${font}.otf`),
-  }
+  },
 });
 const hkGroteskAllPaths = decoration => ({
-  100: hkGroteskPath(`Light${decoration}`),
-  300: hkGroteskPath(decoration !== 'Italic' ? 'Regular' : 'Italic'),
-  500: hkGroteskPath(`Medium${decoration}`),
-  700: hkGroteskPath(`SemiBold${decoration}`),
-  900: hkGroteskPath(`Bold${decoration}`),
+  '100': hkGroteskPath(`Light${decoration}`),
+  '300': hkGroteskPath(decoration !== 'Italic' ? 'Regular' : 'Italic'),
+  '400': hkGroteskPath(`Medium${decoration}`),
+  '700': hkGroteskPath(`SemiBold${decoration}`),
+  '900': hkGroteskPath(`Bold${decoration}`),
 });
 
 module.exports = {
@@ -20,6 +20,7 @@ module.exports = {
     require('postcss-cssnext')(),
     require('postcss-short')(),
     require('postcss-font-magician')({
+      display: 'swap',
       hosted: [fontDir, '/assets/fonts'],
       formats: 'otf',
       custom: {
@@ -27,8 +28,8 @@ module.exports = {
           variants: {
             normal: hkGroteskAllPaths(''),
             italic: hkGroteskAllPaths('Italic'),
-          }
-        }
+          },
+        },
       },
     }),
   ],

@@ -7,17 +7,16 @@
     },
     "parserOptions": {
         "ecmaFeatures": {
-            "jsx": true,
+            "jsx": true
         },
         "sourceType": "module"
     },
+    "extends": "airbnb",
     "rules": {
-        "no-const-assign": "warn",
-        "no-this-before-super": "warn",
-        "no-undef": "warn",
-        "no-unreachable": "warn",
-        "no-unused-vars": "warn",
-        "constructor-super": "warn",
-        "valid-typeof": "warn"
+        "no-extraneous-dependencies": 0,
+        "global-require": 0,
+        "react/jsx-filename-extension": 0,
+        "arrow-parens": 0,
+        "no-use-before-define": 0
     }
 }

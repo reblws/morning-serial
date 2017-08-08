@@ -2,3 +2,4 @@ node_modules/
 .envrc
 .vscode
 dist/
+*.zip

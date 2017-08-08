@@ -1,0 +1,40 @@
+diff --git a/node_modules/postcss-font-magician/index.js b/node_modules/postcss-font-magician/index.js
+index 456e909..ee858aa 100644
+--- a/node_modules/postcss-font-magician/index.js
++++ b/node_modules/postcss-font-magician/index.js
+@@ -35,6 +35,27 @@ var arrayOptions = ['foundries', 'foundriesOrder', 'formats'],
+ /* Helper Methods
+    ========================================================================== */
+ 
++function swapWeightAndStyle(obj) {
++  Object.keys(obj).forEach(function (font) {
++    var fontObj = obj[font]
++    var fixedVariant = {}
++
++    Object.keys(fontObj.variants).forEach(function (weight) {
++      Object.keys(fontObj.variants[weight]).forEach(function (style) {
++
++        if (!fixedVariant[style]) {
++          fixedVariant[style] = {}
++        }
++        fixedVariant[style][weight] = fontObj.variants[weight][style]
++
++      })
++    })
++
++    fontObj.variants = fixedVariant
++  })
++}
++
++
+ function getConfiguredOptions(options) {
+     for (var key in defaultOptions) {
+         if (key in options) {
+@@ -354,6 +375,7 @@ function plugin(options) {
+ 
+             // set the hosted fonts by relative directory
+             foundries.hosted = getDirectoryFonts( relativePath, customFontPath );
++            swapWeightAndStyle(foundries.hosted)
+         } else {
+             // otherwise delete the hosted foundries
+             delete foundries.hosted;

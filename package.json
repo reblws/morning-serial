@@ -9,6 +9,7 @@
     "moment": "^2.18.1",
     "normalize.css": "^7.0.0",
     "postcss-cssnext": "^3.0.2",
+    "prop-types": "^15.5.10",
     "query-string": "^5.0.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",

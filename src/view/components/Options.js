@@ -1,9 +1,21 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
+Options.propTypes = {
+  activeFeeds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  availableSources: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    faviconURL: PropTypes.string.isRequired,
+    host: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+  })).isRequired,
+  toggleActiveFeed: PropTypes.function.isRequired,
+};
 
 export default function Options({
   availableSources,
   activeFeeds,
-  toggleActiveFeed
+  toggleActiveFeed,
 }) {
   const styles = {
     active: {
@@ -28,7 +40,7 @@ export default function Options({
         data-feed={type}
         style={activeFeeds.includes(type) ? styles.active : styles.inactive}
       />
-    )
+    );
   });
   return (
     <div>

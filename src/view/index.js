@@ -1,5 +1,6 @@
 // app/index.js
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Listing from './components/Listing';
 import Options from './components/Options';
 import api from './api-client';
@@ -8,7 +9,11 @@ export default class App extends Component {
   constructor(props) {
     // Each key from the server ends up in props
     super(props);
-    const { activeFeeds, latestArticles, availableSources } = this.props;
+    const {
+      activeFeeds,
+      latestArticles,
+      availableSources,
+    } = this.props;
     this.state = {
       activeFeeds,
       latestArticles,
@@ -57,3 +62,21 @@ export default class App extends Component {
     );
   }
 }
+
+App.propTypes = {
+  activeFeeds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  latestArticles: PropTypes.arrayOf(PropTypes.shape({
+    link: PropTypes.string.isRequired,
+    publishedAt: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    uuid: PropTypes.string.isRequired,
+  })).isRequired,
+  availableSources: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    faviconURL: PropTypes.string.isRequired,
+    host: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+  })).isRequired,
+};
+

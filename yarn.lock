@@ -3863,6 +3863,10 @@ react-dom@^15.6.1:
     object-assign "^4.1.0"
     prop-types "^15.5.10"
 
+react-feather@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/react-feather/-/react-feather-1.0.6.tgz#672122f8020a4198250b83fe3939f8e5a4e9c7ed"
+
 react@^15.6.1:
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/react/-/react-15.6.1.tgz#baa8434ec6780bde997cdc380b79cd33b96393df"

@@ -22,7 +22,17 @@ module.exports = {
     require('postcss-font-magician')({
       display: 'swap',
       hosted: [fontDir, '/assets/fonts'],
-      formats: 'otf',
+      formats: 'otf ttf',
+      foundries: ['google'],
+      variants: {
+        'HK Grotesk': {
+          '100': ['otf'],
+          '300': ['otf'],
+          '400': ['otf'],
+          '700': ['otf'],
+          '900': ['otf'],
+        }
+      },
       custom: {
         'HK Grotesk': {
           variants: {

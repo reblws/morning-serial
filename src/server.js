@@ -71,7 +71,7 @@ server.get('/', cspSettings, async (_, response) => {
         name,
         faviconURL,
         host,
-        type
+        type,
       }) => (
         { name, faviconURL, host, type }
       )),
@@ -107,7 +107,12 @@ server.get('/api/feeds', async (request, response) => {
 server.get('/api/sources', (_, response) => {
   const sources = valueSeq(data);
   response.json(
-    sources.map(({ name, faviconURL, host, type }) => ({ name, faviconURL, host,type })),
+    sources.map(({ name, faviconURL, host, type }) => ({
+      name,
+      faviconURL,
+      host,
+      type,
+    })),
   );
 });
 

@@ -2,10 +2,53 @@
 
 :root {
   /* Color set */
-  --mainColor: red;
-  font-family: system-ui;
+  --foregroundColor: #000;
+  --backgroundColor: #183F63;
+  background-color: var(--backgroundColor);
 }
 
-.text {
-  color: var(--mainColor);
+html {
+  font-family: 'HK Grotesk';
+  font-weight: 500;
 }
+
+main {
+  margin: * auto;
+  padding: 1em;
+  max-width: 700px;
+  background-color: #FAF9F0;
+}
+
+header {
+  text-align: center;
+  font-size: 2em;
+}
+
+a {
+  margin: 0;
+  color: var(--foregroundColor);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.content {
+  margin: 1em;
+}
+
+.article {
+  color: var(--foregroundColor);
+  margin: 0.5em;
+}
+
+.article a {
+  margin: 0;
+  font-size: 1.25em;
+}
+
+.article p {
+  margin: 0;
+}
+

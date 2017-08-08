@@ -7,8 +7,8 @@ export default function Article({
   link,
 }) {
   return (
-    <div>
-      <h2><a href={link}>{title}</a></h2>
+    <div className="article">
+      <a href={link}>{title}</a>
       <p>Published: {moment(publishedAt).fromNow()}</p>
     </div>
   );

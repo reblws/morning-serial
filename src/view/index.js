@@ -41,17 +41,19 @@ export default class App extends Component {
   render() {
     const { latestArticles, availableSources, activeFeeds } = this.state;
     return (
-      <div>
+      <main>
         <header>
-          <h1>Hello world</h1>
+          <h1>Morning Serial</h1>
         </header>
-        <Options
-          availableSources={availableSources}
-          activeFeeds={activeFeeds}
-          toggleActiveFeed={this.toggleActiveFeed}
-        />
-        <Listing latestArticles={latestArticles} />
-      </div>
+        <div className="content">
+          <Options
+            availableSources={availableSources}
+            activeFeeds={activeFeeds}
+            toggleActiveFeed={this.toggleActiveFeed}
+          />
+          <Listing latestArticles={latestArticles} />
+        </div>
+      </main>
     );
   }
 }

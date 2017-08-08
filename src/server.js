@@ -67,7 +67,12 @@ server.get('/', cspSettings, async (_, response) => {
     const initialState = {
       activeFeeds: defaultFeeds,
       latestArticles,
-      availableSources: valueSeq(data).map(({ name, faviconURL, host, type }) => (
+      availableSources: valueSeq(data).map(({
+        name,
+        faviconURL,
+        host,
+        type
+      }) => (
         { name, faviconURL, host, type }
       )),
     };

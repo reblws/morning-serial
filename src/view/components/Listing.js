@@ -7,7 +7,7 @@ export default function Listing({ latestArticles }) {
     <Article key={article.uuid} {...article} />
   );
   return (
-    <section>
+    <section className="listing">
       { articles }
     </section>
   );

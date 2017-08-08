@@ -32,7 +32,7 @@ export default function Options({
   });
   return (
     <div>
-      {sourceToggles}
+      Feeds: {sourceToggles}
     </div>
   );
 }

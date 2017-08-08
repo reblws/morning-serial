@@ -22,8 +22,8 @@ class HackerNews extends API {
 
   async getTopStories() {
     const topStoryIds = await this.fetch('/topstories.json');
-    const top100 = topStoryIds.slice(0, 100).map(id => this.getItem(id));
-    const topStories = await Promise.all(top100);
+    const top30 = topStoryIds.slice(0, 30).map(id => this.getItem(id));
+    const topStories = await Promise.all(top30);
     return topStories;
   }
 

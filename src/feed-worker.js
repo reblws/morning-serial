@@ -1,13 +1,12 @@
 #!/usr/bin/env node
 const data = require('./data');
-const Feed = require('./data/sources/feed');
 const db = require('./db');
 const { valueSeq } = require('./utils');
 
 const sources = valueSeq(data);
 
-function updateAllFeeds(conn, sources) {
-  sources.forEach(feed => updateFeed(conn, feed));
+function updateAllFeeds(conn) {
+  return Promise.all(sources.map(feed => updateFeed(conn, feed)));
 }
 
 async function updateFeed(conn, feed) {
@@ -20,6 +19,8 @@ async function updateFeed(conn, feed) {
   }
 }
 
+// work
 db.connection
-  .then(conn => db.setupAllTables(conn))
-  .then(conn => updateAllFeeds(conn, sources));
+  .then(db.setupAllTables)
+  .then(conn => Promise.resolve(updateAllFeeds(conn)))
+  .then(() => process.exit());

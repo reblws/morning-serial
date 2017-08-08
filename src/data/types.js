@@ -15,6 +15,7 @@ module.exports = {
   ProductHunt: 'product-hunt',
   TheOutline: 'the-outline',
   HackerNoon: 'hacker-noon',
+  Slashdot: 'slashdot',
   /* APIs */
   HackerNews: 'hacker-news',
   // Reddit: 'reddit',

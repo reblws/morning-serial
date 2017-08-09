@@ -29,19 +29,19 @@ export default function Options({
   };
   // TODO: filter out all feed burner links, need to provide the real url back
   //       in data folder
-  const sourceToggles = availableSources.map(({ name, faviconURL, type }) => {
-    return (
-      <input
-        key={type}
-        type="image"
-        src={faviconURL}
-        onClick={toggleActiveFeed}
-        alt={`Toggle ${name}`}
-        data-feed={type}
-        style={activeFeeds.includes(type) ? styles.active : styles.inactive}
-      />
-    );
-  });
+  const sourceToggles = availableSources.map(({ name, faviconURL, type }) => (
+    <input
+      key={type}
+      type="image"
+      src={faviconURL}
+      onClick={toggleActiveFeed}
+      alt={`Toggle ${name}`}
+      title={name}
+      data-feed={type}
+      style={activeFeeds.includes(type) ? styles.active : styles.inactive}
+    />
+  ));
+
   return (
     <div className="options">
       Feeds: {sourceToggles}

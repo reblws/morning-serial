@@ -1,6 +1,7 @@
 // app/index.js
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import CoinMarket from './components/CoinMarket';
 import Listing from './components/Listing';
 import Options from './components/Options';
 import api from './api-client';
@@ -53,15 +54,13 @@ export default class App extends Component {
       availableSources.filter(src => src.type === type)[0].faviconURL;
     return (
       <main>
-        <header>
-          <h1>Morning Serial</h1>
-        </header>
         <div className="content">
           <Options
             availableSources={availableSources}
             activeFeeds={activeFeeds}
             toggleActiveFeed={this.toggleActiveFeed}
           />
+          <CoinMarket />
           <Listing
             latestArticles={latestArticles}
             getFavicon={getFavicon}

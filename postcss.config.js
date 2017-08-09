@@ -25,13 +25,9 @@ module.exports = {
       formats: 'otf ttf',
       foundries: ['google'],
       variants: {
-        'HK Grotesk': {
-          '100': ['otf'],
-          '300': ['otf'],
-          '400': ['otf'],
-          '700': ['otf'],
-          '900': ['otf'],
-        }
+        'Zilla Slab': {
+          '700': [],
+        },
       },
       custom: {
         'HK Grotesk': {

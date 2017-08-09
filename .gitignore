@@ -1,6 +1,8 @@
 node_modules/
 .envrc
 .vscode
-dist/
+dist/server.js
+dist/*/*.js
+dist/*/*.css
 *.zip
 yarn-error.log

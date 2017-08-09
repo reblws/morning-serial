@@ -49,7 +49,6 @@ server.use(bodyParser.urlencoded({ extended: false }));
 
 async function getLatestArticles(conn, ...feeds) {
   try {
-    const conn = await connection;
     const latestArticles = await readTables(conn, ...feeds);
     return latestArticles;
   } catch (e) {
@@ -61,20 +60,21 @@ async function getLatestArticles(conn, ...feeds) {
 // Main route, serves up react
 server.get('/', cspSettings, async (_, response) => {
   const defaultFeeds = valueSeq(types);
-
+  const availableSources = valueSeq(data)
+    .map(({ name, faviconURL, host, type }) =>
+      ({ name, faviconURL, host, type }));
   try {
     const conn = await connection;
     const latestArticles = await getLatestArticles(conn, ...defaultFeeds);
     const initialState = {
       activeFeeds: defaultFeeds,
       latestArticles,
-      availableSources: valueSeq(data).map(({ name, faviconURL, host, type }) =>
-        ({ name, faviconURL, host, type })),
+      availableSources,
     };
     const appString = renderToString(<App {...initialState} />);
     response.send(template({
       body: appString,
-      title: 'Hello World',
+      title: 'Morning Serial - News (Aggregator) Aggregator',
       initialState: JSON.stringify(initialState),
     }));
   } catch (e) {

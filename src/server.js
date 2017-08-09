@@ -1,10 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const csp = require('helmet-csp');
-const React = require('react') ;
+const React = require('react');
 const { renderToString } = require('react-dom/server');
 
-const template = require('./template')
+const template = require('./view/template');
 const App = require('./view').default;
 const { connection, readTables } = require('./db');
 const data = require('./data');
@@ -19,6 +19,8 @@ const cspSettings = csp({
   directives: {
     defaultSrc: [
       "'self'",
+      'https://fonts.gstatic.com',
+      'https://fonts.googleapis.com',
     ],
     scriptSrc: [
       "'self'",
@@ -26,12 +28,18 @@ const cspSettings = csp({
       "'unsafe-eval'",
     ],
     imgSrc: [
-      "*",
+      '*',
     ],
     styleSrc: [
       "'self'",
+      'https://fonts.gstatic.com',
+      'https://fonts.googleapis.com',
       "'unsafe-inline'",
-    ]
+    ],
+    connectSrc: [
+      "'self'",
+      'https://api.coinmarketcap.com/',
+    ],
   },
 });
 
@@ -60,14 +68,8 @@ server.get('/', cspSettings, async (_, response) => {
     const initialState = {
       activeFeeds: defaultFeeds,
       latestArticles,
-      availableSources: valueSeq(data).map(({
-        name,
-        faviconURL,
-        host,
-        type,
-      }) => (
-        { name, faviconURL, host, type }
-      )),
+      availableSources: valueSeq(data).map(({ name, faviconURL, host, type }) =>
+        ({ name, faviconURL, host, type })),
     };
     const appString = renderToString(<App {...initialState} />);
     response.send(template({
@@ -115,7 +117,7 @@ server.get('/api/sources/:source', async (request, response) => {
   try {
     const conn = await connection;
     const latestArticles = await getLatestArticles(conn, source);
-    response.json(latestArticles)
+    response.json(latestArticles);
   } catch (e) {
     response.sendStatus(400);
     throw e;
@@ -143,5 +145,4 @@ server.get('/api/sources/:source/favicon', (request, response) => {
 
 server.listen(PORT);
 console.log('Listening to ', PORT);
-
 

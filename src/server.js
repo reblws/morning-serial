@@ -44,7 +44,7 @@ async function getLatestArticles(conn, ...feeds) {
     const conn = await connection;
     const latestArticles = await readTables(conn, ...feeds);
     return latestArticles;
-  } catch(e) {
+  } catch (e) {
     throw e;
   }
 }
@@ -52,14 +52,7 @@ async function getLatestArticles(conn, ...feeds) {
 // Routes
 // Main route, serves up react
 server.get('/', cspSettings, async (_, response) => {
-  const defaultFeeds = [
-    types.DesignerNews,
-    types.MacRumors,
-    types.BetaList,
-    types.TheOutline,
-    types.HackerNews,
-    types.Sidebar,
-  ];
+  const defaultFeeds = valueSeq(types);
 
   try {
     const conn = await connection;
@@ -82,7 +75,7 @@ server.get('/', cspSettings, async (_, response) => {
       title: 'Hello World',
       initialState: JSON.stringify(initialState),
     }));
-  } catch(e) {
+  } catch (e) {
     throw e;
   }
 });
@@ -97,7 +90,7 @@ server.get('/api/feeds', async (request, response) => {
     const conn = await connection;
     const latestArticles = await getLatestArticles(conn, ...feeds);
     response.json(latestArticles);
-  } catch(e) {
+  } catch (e) {
     response.sendStatus(500);
     throw e;
   }
@@ -123,7 +116,7 @@ server.get('/api/sources/:source', async (request, response) => {
     const conn = await connection;
     const latestArticles = await getLatestArticles(conn, source);
     response.json(latestArticles)
-  } catch(e) {
+  } catch (e) {
     response.sendStatus(400);
     throw e;
   }

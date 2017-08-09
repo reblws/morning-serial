@@ -1,5 +1,4 @@
 const r = require('rethinkdb');
-const data = require('../data');
 const types = require('../data/types');
 const config = require('./config');
 const { toTableName, valueSeq } = require('../utils');
@@ -8,7 +7,6 @@ function logChanges(err, result) {
   if (err) throw err;
   console.log(JSON.stringify(result, null, 2));
 }
-
 
 // Main setup function
 async function setupAllTables(conn) {
@@ -52,7 +50,7 @@ async function updateTable(conn, feedType, documents) {
 }
 
 function mergeUUIDs(conn, uuids) {
-  return (doc, index) => Object.assign(doc, { uuid: uuids[index]});
+  return (doc, index) => Object.assign(doc, { uuid: uuids[index] });
 }
 
 function promiseUUIDs(conn, documents) {

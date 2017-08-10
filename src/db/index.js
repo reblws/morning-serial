@@ -24,12 +24,17 @@ function setupTable(conn, table) {
 }
 
 // Create a union
-async function readTables(conn, ...types) {
+async function readTables(conn, page = 0, ...types) {
   const availableTables = await r.tableList().run(conn);
   const tableNames = types.map(toTableName)
     .filter(table => availableTables.includes(table));
   // Filter the tables we don't have
-  return doTableUnion(...tableNames).limit(50).run(conn);
+  // Paginate 50 articles a time
+  const startIndex = 25 * page;
+  const endIndex = startIndex + 25;
+  return doTableUnion(...tableNames)
+    .slice(startIndex, endIndex)
+    .run(conn);
 }
 
 function doTableUnion(...tables) {

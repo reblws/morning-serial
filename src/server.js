@@ -49,7 +49,7 @@ server.use(bodyParser.urlencoded({ extended: false }));
 
 async function getLatestArticles(conn, ...feeds) {
   try {
-    const latestArticles = await readTables(conn, ...feeds);
+    const latestArticles = await readTables(conn, 0, ...feeds);
     return latestArticles;
   } catch (e) {
     throw e;
@@ -59,13 +59,13 @@ async function getLatestArticles(conn, ...feeds) {
 // Routes
 // Main route, serves up react
 server.get('/', cspSettings, async (_, response) => {
-  const defaultFeeds = valueSeq(types);
+  const defaultFeeds = valueSeq(types).filter(s => s !== 'product-hunt');
   const availableSources = valueSeq(data)
     .map(({ name, faviconURL, host, type }) =>
       ({ name, faviconURL, host, type }));
   try {
     const conn = await connection;
-    const latestArticles = await getLatestArticles(conn, ...defaultFeeds);
+    const latestArticles = await readTables(conn, 0, ...defaultFeeds);
     const initialState = {
       activeFeeds: defaultFeeds,
       latestArticles,
@@ -84,13 +84,15 @@ server.get('/', cspSettings, async (_, response) => {
 
 
 server.get('/api/feeds', async (request, response) => {
-  const { sources } = request.query;
+  const { sources, page } = request.query;
   // parse the query
   // Going to assume they are the string values from ./data/types
   const feeds = sources.split('+');
+  // 1 -> should query db index 0
+  const pg = parseInt(page, 10) || 0;
   try {
     const conn = await connection;
-    const latestArticles = await getLatestArticles(conn, ...feeds);
+    const latestArticles = await readTables(conn, pg, ...feeds);
     response.json(latestArticles);
   } catch (e) {
     response.sendStatus(500);
@@ -113,10 +115,10 @@ server.get('/api/sources', (_, response) => {
 
 // Show the sources listing, but as the records from the db
 server.get('/api/sources/:source', async (request, response) => {
-  const { source } = request.params;
+  const { source, page = 0 } = request.params;
   try {
     const conn = await connection;
-    const latestArticles = await getLatestArticles(conn, source);
+    const latestArticles = await readTables(conn, page, toTableName(source));
     response.json(latestArticles);
   } catch (e) {
     response.sendStatus(400);

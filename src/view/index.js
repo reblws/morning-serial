@@ -7,6 +7,17 @@ import Options from './components/Options';
 import api from './api-client';
 
 export default class App extends Component {
+  // Make the api request for the next page
+  static getNextPage(currentPage, activeFeeds) {
+    const nextPage = currentPage + 1;
+    return api.get('/feeds', {
+      params: {
+        sources: activeFeeds.join('+'),
+        page: nextPage,
+      },
+    }).then(x => x.data);
+  }
+
   constructor(props) {
     // Each key from the server ends up in props
     super(props);
@@ -19,8 +30,10 @@ export default class App extends Component {
       activeFeeds,
       latestArticles,
       availableSources,
+      page: 0,
     };
     this.toggleActiveFeed = this.toggleActiveFeed.bind(this);
+    this.goNextPage = this.goNextPage.bind(this);
   }
 
   toggleActiveFeed(event) {
@@ -40,6 +53,24 @@ export default class App extends Component {
         this.setState({
           activeFeeds: newActiveFeeds,
           latestArticles: response.data,
+          page: 0,
+        });
+      });
+  }
+
+  goNextPage() {
+    const {
+      page,
+      activeFeeds,
+      latestArticles,
+    } = this.state;
+    const nextPageVal = page + 1;
+    const nextArticles = App.getNextPage(nextPageVal, activeFeeds)
+      .then(newArticles => {
+        console.log(newArticles);
+        this.setState({
+          page: nextPageVal,
+          latestArticles: [...latestArticles, ...newArticles],
         });
       });
   }
@@ -54,19 +85,22 @@ export default class App extends Component {
       availableSources.filter(src => src.type === type)[0].faviconURL;
     return (
       <main>
-        <header className="title">
-          <h1>Morning <strong>Serial</strong></h1>
-        </header>
         <Options
           availableSources={availableSources}
           activeFeeds={activeFeeds}
           toggleActiveFeed={this.toggleActiveFeed}
         />
+        <header className="title">
+          <h1>Morning <strong>Serial</strong></h1>
+        </header>
         <CoinMarketTicker />
         <Listing
           latestArticles={latestArticles}
           getFavicon={getFavicon}
         />
+        <center>
+        <button onClick={this.goNextPage}>Next Page</button>
+        </center>
       </main>
     );
   }

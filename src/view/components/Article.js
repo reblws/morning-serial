@@ -27,7 +27,7 @@ export default function Article({
         <img className="favicon" src={favicon} alt={type} />
       </div>
       <div>
-        <a href={link} target="_blank" rel="noreferrer noopener">{title}</a> <span className="article__hostname">({hostname})</span>
+        <a href={link} target="_blank" rel="noreferrer noopener">{title}</a> <span><a href={hostname} className="article__hostname">({hostname})</a></span>
         <p className="article__info">
           <time title={publishedAt} dateTime={publishedAt}>
             <Clock size={12} /> {moment(publishedAt).fromNow()}

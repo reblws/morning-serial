@@ -94,7 +94,7 @@ a:visited {
   text-align: center;
 }
 
-.article__hostname {
+a.article__hostname {
   font-size: var(--smallerFont);
   color: var(--subColor);
 }

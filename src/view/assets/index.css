@@ -4,8 +4,13 @@
   /* Color set */
   --foregroundColor: #000;
   --backgroundColor: #FAF9F0;
-  --frameColor: #2F67B1;
+  --frameColor: #001B44;
   --subColor: #828282;
+  --smallerFont: 0.85em;
+  --rowFlex: {
+    display: flex;
+    flex-direction: row;
+  };
 }
 
 html {
@@ -16,8 +21,8 @@ html {
 
 main {
   margin: * auto;
-  padding: * 2em;
-  max-width: 700px;
+  padding: * 4em;
+  max-width: 650px;
   /* Frame */
   background-color: var(--backgroundColor);
 }
@@ -56,8 +61,7 @@ a:visited {
 }
 
 .article {
-  display: flex;
-  flex-direction: row;
+  @apply --rowFlex;
   align-items: center;
   margin: 0.85em *;
   color: var(--foregroundColor);
@@ -65,7 +69,7 @@ a:visited {
 
 .favicon {
   padding-right: 1em;
-  border-radius: 50px;
+  border-radius: 10px 10px 10px 10px;
   size: 24px;
 }
 
@@ -79,10 +83,10 @@ a:visited {
   vertical-align: middle;
 }
 
-.info {
+.article__info {
   margin: 0;
   color: var(--subColor);
-  font-size: 0.85em;
+  font-size: var(--smallerFont);
   font-weight: lighter;
 }
 
@@ -90,8 +94,33 @@ a:visited {
   text-align: center;
 }
 
-.host-name {
-  font-size: 0.85em;
+.article__hostname {
+  font-size: var(--smallerFont);
+  color: var(--subColor);
 }
+
+.crypto-ticker,
+.ticker-currency {
+  @apply --rowFlex;
+  align-items: center;
+}
+
+.crypto-ticker {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  font-size: var(--smallerFont);
+}
+
+.ticker-currency__ranking {
+
+}
+
+.ticker-currency__ranking::after { content: "." }
+.currency-info__change::after    { content: "%" }
+.currency-info__change--positive { color: green }
+.currency-info__change--negative { color: red }
+.currency-info__change--positive::before { content: "+" }
+
+
 
 

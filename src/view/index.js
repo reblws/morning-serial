@@ -1,7 +1,7 @@
 // app/index.js
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import CoinMarket from './components/CoinMarket';
+import CoinMarketTicker from './components/CoinMarketTicker';
 import Listing from './components/Listing';
 import Options from './components/Options';
 import api from './api-client';
@@ -54,18 +54,19 @@ export default class App extends Component {
       availableSources.filter(src => src.type === type)[0].faviconURL;
     return (
       <main>
-        <div className="content">
-          <Options
-            availableSources={availableSources}
-            activeFeeds={activeFeeds}
-            toggleActiveFeed={this.toggleActiveFeed}
-          />
-          <CoinMarket />
-          <Listing
-            latestArticles={latestArticles}
-            getFavicon={getFavicon}
-          />
-        </div>
+        <header className="title">
+          <h1>Morning <strong>Serial</strong></h1>
+        </header>
+        <Options
+          availableSources={availableSources}
+          activeFeeds={activeFeeds}
+          toggleActiveFeed={this.toggleActiveFeed}
+        />
+        <CoinMarketTicker />
+        <Listing
+          latestArticles={latestArticles}
+          getFavicon={getFavicon}
+        />
       </main>
     );
   }
@@ -75,7 +76,7 @@ App.propTypes = {
   activeFeeds: PropTypes.arrayOf(PropTypes.string).isRequired,
   latestArticles: PropTypes.arrayOf(PropTypes.shape({
     link: PropTypes.string.isRequired,
-    publishedAt: PropTypes.instanceOf(Date).isRequired,
+    publishedAt: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     uuid: PropTypes.string.isRequired,

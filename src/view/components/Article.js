@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Clock } from 'react-feather';
+import url from 'url-parse';
 
 Article.propTypes = {
   title: PropTypes.string.isRequired,
@@ -19,14 +20,19 @@ export default function Article({
   favicon,
   type,
 }) {
+  const { hostname } = url(link);
   return (
     <div className="article">
-      <div className="media">
+      <div className="article__media">
         <img className="favicon" src={favicon} alt={type} />
       </div>
       <div>
-        <a href={link}>{title}</a>
-        <p className="info"><Clock size={12} /> {moment(publishedAt).fromNow()}</p>
+        <a href={link} target="_blank" rel="noreferrer noopener">{title}</a> <span className="article__hostname">({hostname})</span>
+        <p className="article__info">
+          <time title={publishedAt} dateTime={publishedAt}>
+            <Clock size={12} /> {moment(publishedAt).fromNow()}
+          </time>
+        </p>
       </div>
     </div>
   );

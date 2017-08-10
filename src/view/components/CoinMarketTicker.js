@@ -1,7 +1,8 @@
 import React from 'react';
+import CoinTickerCurrency from './CoinTickerCurrency';
 import axios from 'axios';
 
-export default class CoinMarket extends React.Component {
+export default class CoinMarketTicker extends React.Component {
   static fetch(limit = 5, currency = 'USD') {
     const convert = currency === 'USD' ? '' : `&convert=${currency}`;
     return axios.get(`
@@ -18,14 +19,33 @@ export default class CoinMarket extends React.Component {
   }
 
   componentDidMount() {
-    CoinMarket.fetch().then(ticker => this.setState({ ticker }));
+    CoinMarketTicker.fetch().then(ticker => this.setState({ ticker }));
   }
 
   render() {
+    const { ticker } = this.state;
+    const tickerCurrencies = ticker.map(({
+      name,
+      rank,
+      percent_change_24h,
+      price_usd,
+      symbol,
+      market_cap_usd,
+    }) => (
+      <CoinTickerCurrency
+        key={symbol}
+        name={name}
+        rank={rank}
+        price={price_usd}
+        percentChange24h={percent_change_24h}
+        marketCap={market_cap_usd}
+        symbol={symbol}
+      />
+    ));
     return (
-      <div>
-        Hello
-      </div>
+      <section className="crypto-ticker">
+        { tickerCurrencies }
+      </section>
     );
   }
 }

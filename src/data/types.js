@@ -20,6 +20,7 @@ module.exports = {
   TechDirt: 'tech-dirt',
   TechCrunch: 'tech-crunch',
   Digg: 'digg',
+  Longform: 'longform',
   /* APIs */
   HackerNews: 'hacker-news',
   // Reddit: 'reddit',

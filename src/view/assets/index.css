@@ -98,7 +98,7 @@ main {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-area: opt;
-  padding: 1em *;
+  margin: 2em *;
   font-size: var(--smallerFont);
 }
 

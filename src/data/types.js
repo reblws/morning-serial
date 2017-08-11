@@ -17,6 +17,7 @@ module.exports = {
   HackerNoon: 'hacker-noon',
   Slashdot: 'slashdot',
   TheRegister: 'the-register',
+  TechDirt: 'tech-dirt',
   /* APIs */
   HackerNews: 'hacker-news',
   // Reddit: 'reddit',

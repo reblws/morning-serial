@@ -3,7 +3,7 @@
 module.exports = function html({ body, title, initialState }) {
   return `
     <!DOCTYPE html>
-    <html>
+    <html lang="en">
       <head>
         <script>window.__APP_INITIAL_STATE__ = ${initialState}</script>
         <title>${title}</title>

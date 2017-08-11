@@ -16,7 +16,7 @@ const App = require('./view').default;
 const { connection, readTables } = require('./db');
 const data = require('./data');
 const types = require('./data/types');
-const { valueSeq } = require('./utils');
+const { valueSeq, findSource } = require('./utils');
 
 const server = express();
 const PORT = process.env.PORT || 9999;
@@ -58,10 +58,12 @@ server.use('/assets', express.static('dist/assets'));
 // Routes
 // Main route, serves up react
 server.get('/', cspSettings, async (request, response) => {
-  const activeFeeds = request.cookies.activeFeeds.split('+').filter(x => x);
+  // Grab any cookies containing the feed if they exist
+  const { activeFeeds = '' } = request.cookies;
+  const cookieFeeds = activeFeeds.split('+').filter(x => x);
   const defaultFeeds = valueSeq(types).filter(s => s !== 'product-hunt');
-  const feeds = activeFeeds.length > 0
-    ? activeFeeds
+  const feeds = cookieFeeds.length > 0
+    ? cookieFeeds
     : defaultFeeds;
   const availableSources = valueSeq(data)
     .map(({ name, faviconURL, host, type }) =>
@@ -132,7 +134,7 @@ server.get('/api/sources/:source', async (request, response) => {
 // Just get the sources listing, rather than from the db, this is for debugging
 server.get('/api/sources/:source/listing', (request, response) => {
   const { source } = request.params;
-  valueSeq(data).filter(src => src.type === source)[0].listing
+  findSource(data, source).listing
     .then(results => response.json(results))
     .catch(err => console.error(err));
 });
@@ -140,7 +142,7 @@ server.get('/api/sources/:source/listing', (request, response) => {
 // Expose the favicons
 server.get('/api/sources/:source/favicon', (request, response) => {
   const { source } = request.params;
-  const { faviconURL } = valueSeq(data).filter(src => src.type === source)[0];
+  const { faviconURL } = findSource(data, source);
   if (!faviconURL) {
     response.sendStatus(400);
     return;

@@ -77,6 +77,7 @@ main {
 }
 
 .title__button-container {
+  background-color: var(--backgroundColor);
   grid-area: opt-bar;
   align-self: center;
   justify-self: end;
@@ -94,8 +95,15 @@ main {
 
 
 .options {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-area: opt;
+  padding: 1em *;
   font-size: var(--smallerFont);
+}
+
+.options--visible {
+  font-weight: 300;
 }
 
 .options__source-toggle {

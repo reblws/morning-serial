@@ -92,30 +92,32 @@ export default class App extends Component {
     const getFavicon = type =>
       availableSources.filter(src => src.type === type)[0].faviconURL;
     return (
-      <main>
-        <header className="title">
-          <Options
-            availableSources={availableSources}
-            activeFeeds={activeFeeds}
-            toggleActiveFeed={this.toggleActiveFeed}
-            showOptions={showOptions}
+      <div>
+        <main>
+          <header className="title">
+            <Options
+              availableSources={availableSources}
+              activeFeeds={activeFeeds}
+              toggleActiveFeed={this.toggleActiveFeed}
+              showOptions={showOptions}
+            />
+            <h1 className="title__header">
+              Morning <strong>Serial</strong>
+            </h1>
+            <div className="title__button-container">
+              <button className="options__toggle" onClick={this.toggleOptions}>Options</button>
+            </div>
+          </header>
+          <CoinMarketTicker />
+          <Listing
+            latestArticles={latestArticles}
+            getFavicon={getFavicon}
           />
-          <h1 className="title__header">
-            Morning <strong>Serial</strong>
-          </h1>
-          <div className="title__button-container">
-            <button className="options__toggle" onClick={this.toggleOptions}>Options</button>
+          <div className="show-more">
+            <button onClick={this.goNextPage}>More</button>
           </div>
-        </header>
-        <CoinMarketTicker />
-        <Listing
-          latestArticles={latestArticles}
-          getFavicon={getFavicon}
-        />
-        <div className="show-more">
-          <button onClick={this.goNextPage}>More</button>
-        </div>
-      </main>
+        </main>
+      </div>
     );
   }
 }

@@ -58,8 +58,12 @@ export default function Options({
     );
   });
 
+  const optionsClassList = ['options'];
+  if (showOptions) {
+    optionsClassList.push('options--visible');
+  }
   return (
-    <div className="options" style={showOptions ? {} : styles.hidden}>
+    <div className={optionsClassList.join(' ')} style={showOptions ? {} : styles.hidden}>
       {sourceToggles}
     </div>
   );

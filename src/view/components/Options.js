@@ -35,34 +35,36 @@ export default function Options({
   };
   // TODO: filter out all feed burner links, need to provide the real url back
   //       in data folder
-  const sourceToggles = availableSources.map(({ name, faviconURL, type }) => {
-    const sourceToggleClassList = ['options__source-toggle'];
-    const isActive = activeFeeds.includes(type);
-    if (!isActive) {
-      sourceToggleClassList.push('options__source-toggle--inactive');
-    }
+  const sourceToggles = availableSources
+    .sort((a, b) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : 0)
+    .map(({ name, faviconURL, type }) => {
+      const sourceToggleClassList = ['options__source-toggle'];
+      const isActive = activeFeeds.includes(type);
+      if (!isActive) {
+        sourceToggleClassList.push('options__source-toggle--inactive');
+      }
 
-    return (
-      <div
-        className={sourceToggleClassList.join(' ')}
-        role="checkbox"
-        aria-checked={isActive}
-        tabIndex="0"
-        key={type}
-        onClick={toggleActiveFeed}
-        data-feed={type}
-      >
-        <img
-          className="options__source-favicon"
-          src={faviconURL}
-          alt={`Toggle ${name}`}
-          title={name}
-          style={isActive ? styles.active : styles.inactive}
-        />
-        {name}
-      </div>
-    );
-  });
+      return (
+        <div
+          className={sourceToggleClassList.join(' ')}
+          role="checkbox"
+          aria-checked={isActive}
+          tabIndex="0"
+          key={type}
+          onClick={toggleActiveFeed}
+          data-feed={type}
+        >
+          <img
+            className="options__source-favicon"
+            src={faviconURL}
+            alt={`Toggle ${name}`}
+            title={name}
+            style={isActive ? styles.active : styles.inactive}
+          />
+          {name}
+        </div>
+      );
+    });
 
   const optionsClassList = ['options'];
   if (showOptions) {

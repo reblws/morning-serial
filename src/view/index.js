@@ -94,15 +94,17 @@ export default class App extends Component {
     return (
       <main>
         <header className="title">
-          <div className="title-flex">
-            <h1>Morning <strong>Serial</strong></h1>
-            <Options
-              availableSources={availableSources}
-              activeFeeds={activeFeeds}
-              toggleActiveFeed={this.toggleActiveFeed}
-              showOptions={showOptions}
-              toggleOptions={this.toggleOptions}
-            />
+          <Options
+            availableSources={availableSources}
+            activeFeeds={activeFeeds}
+            toggleActiveFeed={this.toggleActiveFeed}
+            showOptions={showOptions}
+          />
+          <h1 className="title__header">
+            Morning <strong>Serial</strong>
+          </h1>
+          <div className="title__button-container">
+            <button className="options__toggle" onClick={this.toggleOptions}>Options</button>
           </div>
         </header>
         <CoinMarketTicker />

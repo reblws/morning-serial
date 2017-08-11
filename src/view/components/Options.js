@@ -10,7 +10,7 @@ Options.propTypes = {
     type: PropTypes.string.isRequired,
   })).isRequired,
   toggleActiveFeed: PropTypes.func.isRequired,
-  toggleOptions: PropTypes.func.isRequired,
+  // toggleOptions: PropTypes.func.isRequired,
   showOptions: PropTypes.bool.isRequired,
 };
 
@@ -19,7 +19,6 @@ export default function Options({
   activeFeeds,
   toggleActiveFeed,
   showOptions,
-  toggleOptions,
 }) {
   const styles = {
     active: {
@@ -45,7 +44,7 @@ export default function Options({
     }
 
     return (
-      <div className="options__source-toggle" key={type} onClick={toggleActiveFeed}>
+      <div className="options__source-toggle" key={type}>
         <img
           className="options__source-favicon"
           src={faviconURL}
@@ -60,13 +59,8 @@ export default function Options({
   });
 
   return (
-    <div className="title__options">
-      <div className="options" style={showOptions ? {} : styles.hidden}>
-        {sourceToggles}
-      </div>
-      <div className="title__button-container">
-        <button className="options__toggle" onClick={toggleOptions}>Options</button>
-      </div>
+    <div className="options" style={showOptions ? {} : styles.hidden}>
+      {sourceToggles}
     </div>
   );
 }

@@ -62,40 +62,43 @@ main {
   background-color: var(--backgroundColor);
 }
 
-header.title {
-  @apply --columnFlex;
-}
-
-header.title h1 {
+.title__header {
   /* No flexing */
-  flex: none;
-  align-self: flex-end;
+  grid-area: h1;
   margin: 0;
   font-size: 2.5em;
   font-weight: 300;
-  font-family: 'Zilla Slab', sans-serif;
+  font-family: 'Zilla Slab', Georgia, serif;
   text-transform: lowercase;
 }
 
-header.title strong {
+.title__header strong {
   font-weight: 700;
 }
 
 .title__button-container {
-  text-align: right;
+  grid-area: opt-bar;
+  align-self: center;
+  justify-self: end;
 }
 
+/* Grid */
+.title {
+  display: grid;
+  grid-template-areas:
+    "opt opt opt opt opt"
+    "opt opt opt opt opt"
+    "opt opt opt opt opt"
+    "h1 h1 opt-bar opt-bar opt-bar";
+}
+
+
 .options {
-  @apply --rowFlex;
-  flex-wrap: wrap;
+  grid-area: opt;
   font-size: var(--smallerFont);
-  /* lost-center: 50px; */
 }
 
 .options__source-toggle {
-  @apply --rowFlex;
-  align-items: center;
-  flex: 1 0 25%;
 }
 
 .options__source-favicon {
@@ -105,7 +108,7 @@ header.title strong {
 
 
 .title-flex {
-  @apply --rowFlex;
+  /* @apply --rowFlex; */
 }
 
 a {

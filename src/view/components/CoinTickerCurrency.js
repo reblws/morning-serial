@@ -20,8 +20,6 @@ export default function CoinTickerCurrency({
   symbol,
   marketCap,
 }) {
-  const titleCaseSymbol = (s, index) => index !== 0 ? s.toLowerCase() : s;
-  const coinComponentName = symbol.split().map(titleCaseSymbol).join('');
   const percentChange = parseInt(percentChange24h, 10);
   const percentChangeModifierClassName = percentChange > 0
     ? 'currency-info__change--positive'
@@ -41,7 +39,13 @@ export default function CoinTickerCurrency({
       className="currency-link"
     >
       <div className="ticker-currency">
-        <img className="ticker-currency__icon" src={svgPath} alt={name} title={name} />
+        <img
+          className={`ticker-currency__icon ${symbol}`}
+          src={svgPath}
+          alt={name}
+          title={name}
+          type="image/svg+xml"
+        />
         <div className="currency-info">
           <div className="currency-info__price">
             <strong>{marketCapDisplay}</strong><br />

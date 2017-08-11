@@ -18,6 +18,8 @@ module.exports = {
   Slashdot: 'slashdot',
   TheRegister: 'the-register',
   TechDirt: 'tech-dirt',
+  TechCrunch: 'tech-crunch',
+  Digg: 'digg',
   /* APIs */
   HackerNews: 'hacker-news',
   // Reddit: 'reddit',

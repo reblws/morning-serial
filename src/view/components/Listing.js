@@ -6,7 +6,10 @@ Listing.propTypes = {
   latestArticles: PropTypes.arrayOf(
     PropTypes.shape({
       link: PropTypes.string.isRequired,
-      publishedAt: PropTypes.string.isRequired,
+      publishedAt: PropTypes.oneOfType([
+        PropTypes.instanceOf(Date),
+        PropTypes.string,
+      ]),
       title: PropTypes.string.isRequired,
       type: PropTypes.string.isRequired,
       uuid: PropTypes.string.isRequired,

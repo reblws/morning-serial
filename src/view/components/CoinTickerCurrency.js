@@ -8,6 +8,8 @@ CoinTickerCurrency.propTypes = {
   rank: PropTypes.string.isRequired,
   price: PropTypes.string.isRequired,
   percentChange24h: PropTypes.string.isRequired,
+  symbol: PropTypes.string.isRequired,
+  marketCap: PropTypes.string.isRequired,
 };
 
 export default function CoinTickerCurrency({
@@ -24,26 +26,32 @@ export default function CoinTickerCurrency({
   const percentChangeModifierClassName = percentChange > 0
     ? 'currency-info__change--positive'
     : 'currency-info__change--negative';
-  const valueDisplay = format(
-    parseFloat(price),
-    { code: 'USD' },
-  );
+  const marketCapDisplay = format(parseFloat(marketCap), {
+    code: 'USD',
+    precision: 0,
+  });
+  const priceDisplay = format(parseFloat(price), { code: 'USD' });
+  const svgPath = `/assets/svg/${symbol}.svg`;
+  const linkName = name.split(/\s/g).join('-').toLowerCase();
   return (
-    <div className="ticker-currency">
-      <div className="ticker-currency__ranking">
-        {rank}
+    <a
+      href={`
+        https://coinmarketcap.com/currencies/${linkName}/
+      `}
+      className="currency-link"
+    >
+      <div className="ticker-currency">
+        <img className="ticker-currency__icon" src={svgPath} alt={name} title={name} />
+        <div className="currency-info">
+          <div className="currency-info__price">
+            <strong>{marketCapDisplay}</strong><br />
+            {priceDisplay}/{symbol}
+          </div>
+          <div className={`currency-info__change ${percentChangeModifierClassName}`}>
+            {percentChange24h}
+          </div>
+        </div>
       </div>
-      <div className="currency-info">
-        <div className="currency-info__price">
-          <strong>{valueDisplay}</strong>
-        </div>
-        <div className={`currency-info__change ${percentChangeModifierClassName}`}>
-          {percentChange24h}
-        </div>
-        <div className="currency-info__symbol">
-          ({symbol})
-        </div>
-      </div>
-    </div>
+    </a>
   );
 }

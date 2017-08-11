@@ -19,24 +19,25 @@ module.exports = {
     require('postcss-import')(),
     require('postcss-cssnext')(),
     require('postcss-short')(),
-    require('postcss-font-magician')({
-      display: 'swap',
-      hosted: [fontDir, '/assets/fonts'],
-      formats: 'otf ttf',
-      foundries: ['google'],
-      variants: {
-        'Zilla Slab': {
-          '700': [],
-        },
-      },
-      custom: {
-        'HK Grotesk': {
-          variants: {
-            normal: hkGroteskAllPaths(''),
-            italic: hkGroteskAllPaths('Italic'),
-          },
-        },
-      },
-    }),
+    // require('lost')(),
+    // require('postcss-font-magician')({
+    //   display: 'swap',
+    //   hosted: [fontDir, '/assets/fonts'],
+    //   formats: 'otf ttf',
+    //   foundries: ['google'],
+    //   variants: {
+    //     'Zilla Slab': {
+    //       '700': [],
+    //     },
+    //   },
+    //   custom: {
+    //     'HK Grotesk': {
+    //       variants: {
+    //         normal: hkGroteskAllPaths(''),
+    //         italic: hkGroteskAllPaths('Italic'),
+    //       },
+    //     },
+    //   },
+    // }),
   ],
 };

@@ -1,4 +1,35 @@
- @import 'normalize.css';
+@import 'normalize.css';
+@import url(https://fonts.googleapis.com/css?family=Zilla+Slab:300,700);
+
+@font-face {
+  font-family: 'HK Grotesk';
+  src: url(/assets/fonts/HKGrotesk-Light.otf);
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: 'HK Grotesk';
+  src: url(/assets/fonts/HKGrotesk-Regular.otf);
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'HK Grotesk';
+  src: url(/assets/fonts/HKGrotesk-Medium.otf);
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'HK Grotesk';
+  src: url(/assets/fonts/HKGrotesk-SemiBold.otf);
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'HK Grotesk';
+  src: url(/assets/fonts/HKGrotesk-Bold.otf);
+  font-weight: 900;
+}
 
 :root {
   /* Color set */
@@ -10,36 +41,71 @@
   --rowFlex: {
     display: flex;
     flex-direction: row;
-  };
+  }
+  --columnFlex: {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 html {
   font-family: 'HK Grotesk';
-  font-weight: 500;
+  font-weight: 300;
   background-color: var(--frameColor);
 }
 
 main {
   margin: * auto;
-  padding: * 4em;
+  padding: * 2em;
   max-width: 650px;
   /* Frame */
   background-color: var(--backgroundColor);
 }
 
 header.title {
-  padding: 2em *;
+  @apply --columnFlex;
+}
+
+header.title h1 {
+  /* No flexing */
+  flex: none;
+  align-self: flex-end;
+  margin: 0;
+  font-size: 2.5em;
+  font-weight: 300;
   font-family: 'Zilla Slab', sans-serif;
   text-transform: lowercase;
 }
 
-header.title h1 {
-  font-size: 2.5em;
-  font-weight: 300;
-}
-
 header.title strong {
   font-weight: 700;
+}
+
+.title__button-container {
+  text-align: right;
+}
+
+.options {
+  @apply --rowFlex;
+  flex-wrap: wrap;
+  font-size: var(--smallerFont);
+  /* lost-center: 50px; */
+}
+
+.options__source-toggle {
+  @apply --rowFlex;
+  align-items: center;
+  flex: 1 0 25%;
+}
+
+.options__source-favicon {
+  margin-right: 0.5em;
+  size: 1em;
+}
+
+
+.title-flex {
+  @apply --rowFlex;
 }
 
 a {
@@ -48,7 +114,11 @@ a {
   text-decoration: none;
 }
 
-a:hover {
+a.currency-link:visited {
+  color: var(--foregroundColor);
+}
+
+a.article__link:hover {
   text-decoration: underline;
 }
 
@@ -69,7 +139,6 @@ a:visited {
 
 .favicon {
   padding-right: 1em;
-  border-radius: 10px 10px 10px 10px;
   size: 24px;
 }
 
@@ -90,13 +159,17 @@ a:visited {
   font-weight: lighter;
 }
 
-.options {
-  text-align: center;
-}
+.article__hostname::before { content: "("}
+.article__hostname::after { content: ")"}
 
 a.article__hostname {
   font-size: var(--smallerFont);
   color: var(--subColor);
+}
+
+button.options__toggle {
+  border: none;
+  background: none;
 }
 
 .crypto-ticker,
@@ -106,13 +179,14 @@ a.article__hostname {
 }
 
 .crypto-ticker {
+  margin: 2rem *;
   flex-wrap: wrap;
   justify-content: space-between;
-  font-size: var(--smallerFont);
+  font-size: calc(var(--smallerFont) - 0.2em);
 }
 
-.ticker-currency__ranking {
-
+.ticker-currency__icon {
+  size: 1.5rem;
 }
 
 .ticker-currency__ranking::after { content: "." }
@@ -121,6 +195,12 @@ a.article__hostname {
 .currency-info__change--negative { color: red }
 .currency-info__change--positive::before { content: "+" }
 
+.currency-info {
+  margin-left: 1em;
+  text-align: right;
+}
 
-
-
+.show-more {
+  text-align: center;
+  padding: 3rem *;
+}

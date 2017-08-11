@@ -10,12 +10,16 @@ Options.propTypes = {
     type: PropTypes.string.isRequired,
   })).isRequired,
   toggleActiveFeed: PropTypes.func.isRequired,
+  toggleOptions: PropTypes.func.isRequired,
+  showOptions: PropTypes.bool.isRequired,
 };
 
 export default function Options({
   availableSources,
   activeFeeds,
   toggleActiveFeed,
+  showOptions,
+  toggleOptions,
 }) {
   const styles = {
     active: {
@@ -26,25 +30,43 @@ export default function Options({
       opacity: 0.2,
       maxWidth: 20,
     },
+    hidden: {
+      visibility: 'hidden',
+    },
   };
   // TODO: filter out all feed burner links, need to provide the real url back
   //       in data folder
-  const sourceToggles = availableSources.map(({ name, faviconURL, type }) => (
-    <input
-      key={type}
-      type="image"
-      src={faviconURL}
-      onClick={toggleActiveFeed}
-      alt={`Toggle ${name}`}
-      title={name}
-      data-feed={type}
-      style={activeFeeds.includes(type) ? styles.active : styles.inactive}
-    />
-  ));
+  const sourceToggles = availableSources.map(({ name, faviconURL, type }) => {
+    const classList = ['options__source-toggle'];
+    const isActive = activeFeeds.includes(type);
+
+    if (isActive) {
+      classList.push('options__source-toggle--inactive');
+    }
+
+    return (
+      <div className="options__source-toggle" key={type} onClick={toggleActiveFeed}>
+        <img
+          className="options__source-favicon"
+          src={faviconURL}
+          alt={`Toggle ${name}`}
+          title={name}
+          data-feed={type}
+          style={isActive ? styles.active : styles.inactive}
+        />
+        {name}
+      </div>
+    );
+  });
 
   return (
-    <div className="options">
-      Feeds: {sourceToggles}
+    <div className="title__options">
+      <div className="options" style={showOptions ? {} : styles.hidden}>
+        {sourceToggles}
+      </div>
+      <div className="title__button-container">
+        <button className="options__toggle" onClick={toggleOptions}>Options</button>
+      </div>
     </div>
   );
 }

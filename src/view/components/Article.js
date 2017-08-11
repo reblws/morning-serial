@@ -6,7 +6,10 @@ import url from 'url-parse';
 
 Article.propTypes = {
   title: PropTypes.string.isRequired,
-  publishedAt: PropTypes.instanceOf(Date).isRequired,
+  publishedAt: PropTypes.oneOfType([
+    PropTypes.instanceOf(Date),
+    PropTypes.string,
+  ]).isRequired,
   link: PropTypes.string.isRequired,
   // type: PropTypes.string.isRequired,
   favicon: PropTypes.string.isRequired,
@@ -20,14 +23,14 @@ export default function Article({
   favicon,
   type,
 }) {
-  const { hostname } = url(link);
+  const { hostname, href } = url(link);
   return (
     <div className="article">
       <div className="article__media">
-        <img className="favicon" src={favicon} alt={type} />
+        <img className="favicon" src={favicon} alt={type} title={type} />
       </div>
       <div>
-        <a href={link} target="_blank" rel="noreferrer noopener">{title}</a> <span><a href={hostname} className="article__hostname">({hostname})</a></span>
+        <a className="article__link" href={href} target="_blank" rel="noreferrer noopener">{title}</a> <a href={hostname} className="article__hostname">{hostname}</a>
         <p className="article__info">
           <time title={publishedAt} dateTime={publishedAt}>
             <Clock size={12} /> {moment(publishedAt).fromNow()}

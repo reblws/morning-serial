@@ -31,9 +31,17 @@ export default class App extends Component {
       latestArticles,
       availableSources,
       page: 0,
+      showOptions: false,
     };
     this.toggleActiveFeed = this.toggleActiveFeed.bind(this);
+    this.toggleOptions = this.toggleOptions.bind(this);
     this.goNextPage = this.goNextPage.bind(this);
+  }
+
+  toggleOptions() {
+    this.setState({
+      showOptions: !this.state.showOptions,
+    });
   }
 
   toggleActiveFeed(event) {
@@ -65,9 +73,8 @@ export default class App extends Component {
       latestArticles,
     } = this.state;
     const nextPageVal = page + 1;
-    const nextArticles = App.getNextPage(nextPageVal, activeFeeds)
+    return App.getNextPage(nextPageVal, activeFeeds)
       .then(newArticles => {
-        console.log(newArticles);
         this.setState({
           page: nextPageVal,
           latestArticles: [...latestArticles, ...newArticles],
@@ -80,27 +87,32 @@ export default class App extends Component {
       latestArticles,
       availableSources,
       activeFeeds,
+      showOptions,
     } = this.state;
     const getFavicon = type =>
       availableSources.filter(src => src.type === type)[0].faviconURL;
     return (
       <main>
-        <Options
-          availableSources={availableSources}
-          activeFeeds={activeFeeds}
-          toggleActiveFeed={this.toggleActiveFeed}
-        />
         <header className="title">
-          <h1>Morning <strong>Serial</strong></h1>
+          <div className="title-flex">
+            <h1>Morning <strong>Serial</strong></h1>
+            <Options
+              availableSources={availableSources}
+              activeFeeds={activeFeeds}
+              toggleActiveFeed={this.toggleActiveFeed}
+              showOptions={showOptions}
+              toggleOptions={this.toggleOptions}
+            />
+          </div>
         </header>
         <CoinMarketTicker />
         <Listing
           latestArticles={latestArticles}
           getFavicon={getFavicon}
         />
-        <center>
-        <button onClick={this.goNextPage}>Next Page</button>
-        </center>
+        <div className="show-more">
+          <button onClick={this.goNextPage}>More</button>
+        </div>
       </main>
     );
   }
@@ -110,7 +122,10 @@ App.propTypes = {
   activeFeeds: PropTypes.arrayOf(PropTypes.string).isRequired,
   latestArticles: PropTypes.arrayOf(PropTypes.shape({
     link: PropTypes.string.isRequired,
-    publishedAt: PropTypes.string.isRequired,
+    publishedAt: PropTypes.oneOfType([
+      PropTypes.instanceOf(Date),
+      PropTypes.string,
+    ]),
     title: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     uuid: PropTypes.string.isRequired,

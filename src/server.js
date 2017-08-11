@@ -1,11 +1,18 @@
+/* Server & React */
 const express = require('express');
-const bodyParser = require('body-parser');
-const csp = require('helmet-csp');
 const React = require('react');
 const { renderToString } = require('react-dom/server');
 
+/* Middleware Imports */
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const csp = require('helmet-csp');
+
+/* Templating and Components */
 const template = require('./view/template');
 const App = require('./view').default;
+
+/* Data & Database */
 const { connection, readTables } = require('./db');
 const data = require('./data');
 const types = require('./data/types');
@@ -43,31 +50,27 @@ const cspSettings = csp({
   },
 });
 
+server.use(cookieParser());
 server.use(cspSettings);
-server.use('/assets', express.static('dist/assets'));
 server.use(bodyParser.urlencoded({ extended: false }));
-
-async function getLatestArticles(conn, ...feeds) {
-  try {
-    const latestArticles = await readTables(conn, 0, ...feeds);
-    return latestArticles;
-  } catch (e) {
-    throw e;
-  }
-}
+server.use('/assets', express.static('dist/assets'));
 
 // Routes
 // Main route, serves up react
-server.get('/', cspSettings, async (_, response) => {
+server.get('/', cspSettings, async (request, response) => {
+  const activeFeeds = request.cookies.activeFeeds.split('+').filter(x => x);
   const defaultFeeds = valueSeq(types).filter(s => s !== 'product-hunt');
+  const feeds = activeFeeds.length > 0
+    ? activeFeeds
+    : defaultFeeds;
   const availableSources = valueSeq(data)
     .map(({ name, faviconURL, host, type }) =>
       ({ name, faviconURL, host, type }));
   try {
     const conn = await connection;
-    const latestArticles = await readTables(conn, 0, ...defaultFeeds);
+    const latestArticles = await readTables(conn, 0, ...feeds);
     const initialState = {
-      activeFeeds: defaultFeeds,
+      activeFeeds: feeds,
       latestArticles,
       availableSources,
     };
@@ -118,7 +121,7 @@ server.get('/api/sources/:source', async (request, response) => {
   const { source, page = 0 } = request.params;
   try {
     const conn = await connection;
-    const latestArticles = await readTables(conn, page, toTableName(source));
+    const latestArticles = await readTables(conn, page, source);
     response.json(latestArticles);
   } catch (e) {
     response.sendStatus(400);

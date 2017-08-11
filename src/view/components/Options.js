@@ -36,21 +36,27 @@ export default function Options({
   // TODO: filter out all feed burner links, need to provide the real url back
   //       in data folder
   const sourceToggles = availableSources.map(({ name, faviconURL, type }) => {
-    const classList = ['options__source-toggle'];
+    const sourceToggleClassList = ['options__source-toggle'];
     const isActive = activeFeeds.includes(type);
-
-    if (isActive) {
-      classList.push('options__source-toggle--inactive');
+    if (!isActive) {
+      sourceToggleClassList.push('options__source-toggle--inactive');
     }
 
     return (
-      <div className="options__source-toggle" key={type}>
+      <div
+        className={sourceToggleClassList.join(' ')}
+        role="checkbox"
+        aria-checked={isActive}
+        tabIndex="0"
+        key={type}
+        onClick={toggleActiveFeed}
+        data-feed={type}
+      >
         <img
           className="options__source-favicon"
           src={faviconURL}
           alt={`Toggle ${name}`}
           title={name}
-          data-feed={type}
           style={isActive ? styles.active : styles.inactive}
         />
         {name}

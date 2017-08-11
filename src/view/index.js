@@ -18,6 +18,12 @@ export default class App extends Component {
     }).then(x => x.data);
   }
 
+  static writeActiveFeedsCookie(activeFeeds) {
+    // Store active feeds as cookie to keep the same feeds
+    // list on future visits
+    document.cookie = `activeFeeds=${activeFeeds.join('+')}`;
+  }
+
   constructor(props) {
     // Each key from the server ends up in props
     super(props);
@@ -48,11 +54,11 @@ export default class App extends Component {
     const { feed } = event.target.dataset;
     const { activeFeeds } = this.state;
     const newActiveFeeds = activeFeeds.includes(feed)
-      ? activeFeeds.filter(x => x !== feed)
+      ? activeFeeds.filter(x => x !== feed).filter(x => x)
       : [...activeFeeds, feed];
     // Need to make our api request here
     // TODO: handle when someone removes ALL feeds
-    api.get('/feeds', {
+    return api.get('/feeds', {
       params: {
         sources: newActiveFeeds.join('+'),
       },
@@ -63,6 +69,7 @@ export default class App extends Component {
           latestArticles: response.data,
           page: 0,
         });
+        App.writeActiveFeedsCookie(newActiveFeeds);
       });
   }
 
@@ -91,6 +98,10 @@ export default class App extends Component {
     } = this.state;
     const getFavicon = type =>
       availableSources.filter(src => src.type === type)[0].faviconURL;
+
+    const optionsButtonClassList = showOptions
+      ? ['options__toggle', 'options__toggle--active']
+      : ['options__toggle', 'options__toggle--inactive'];
     return (
       <div>
         <main>
@@ -105,7 +116,7 @@ export default class App extends Component {
               Morning <strong>Serial</strong>
             </h1>
             <div className="title__button-container">
-              <button className="options__toggle" onClick={this.toggleOptions}>Options</button>
+              <button className={optionsButtonClassList.join(' ')} onClick={this.toggleOptions}>Options</button>
             </div>
           </header>
           <CoinMarketTicker />

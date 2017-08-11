@@ -107,6 +107,11 @@ main {
 }
 
 .options__source-toggle {
+  cursor: pointer;
+}
+
+.options__source-toggle--inactive {
+  color: var(--subColor);
 }
 
 .options__source-favicon {
@@ -178,9 +183,25 @@ a.article__hostname {
   color: var(--subColor);
 }
 
-button.options__toggle {
+/* Up-pointing triangle */
+.options__toggle--active::before { content: "\25b4 " }
+/* Right-pointing triangle */
+.options__toggle--inactive::before { content: "\25b8 " }
+
+
+.options__toggle {
+  font-family: 'HK Grotesk';
+  font-weight: 300;
   border: none;
   background: none;
+  padding: 0;
+  color: var(--foregroundColor);
+  cursor: pointer;
+}
+
+.options__toggle:hover { text-decoration: underline; }
+.options__toggle:focus {
+  outline: 0;
 }
 
 .crypto-ticker,

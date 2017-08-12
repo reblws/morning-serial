@@ -35,6 +35,7 @@
   /* Color set */
   --foregroundColor: #000;
   --backgroundColor: #FAF9F0;
+  --backgroundHighlightColor: #F9F49D;
   --frameColor: #001B44;
   --subColor: #545454;
   --smallerFont: 0.85em;
@@ -50,6 +51,7 @@
 
 html {
   font-family: 'HK Grotesk';
+  font-size: 18px;
   font-weight: 300;
   background-color: var(--frameColor);
 }
@@ -57,7 +59,7 @@ html {
 main {
   margin: * auto;
   padding: * 2em;
-  max-width: 650px;
+  max-width: 700px;
   /* Frame */
   background-color: var(--backgroundColor);
 }
@@ -73,7 +75,7 @@ main {
   user-select: none;
 }
 
-.title__header strong {
+.title__header b {
   font-weight: 700;
 }
 
@@ -119,8 +121,6 @@ main {
   margin-right: 0.5em;
   size: 1em;
 }
-
-
 .title-flex {
   /* @apply --rowFlex; */
 }
@@ -147,26 +147,27 @@ a:visited {
   margin: 1em;
 }
 
-.article {
-  @apply --rowFlex;
-  align-items: center;
-  margin: 0.85em *;
-  color: var(--foregroundColor);
-}
 
 .favicon {
   padding-right: 1em;
   size: 24px;
 }
 
-.article a {
-  margin: 0;
-  font-size: 1.15em;
-}
+.article {
+  @apply --rowFlex;
+  align-items: center;
+  margin: 0.85em *;
+  color: var(--foregroundColor);
 
-.article svg {
-  /* font-weight: 400; */
-  vertical-align: middle;
+  a {
+    margin: 0;
+    font-size: 1.15em;
+  }
+
+  svg {
+    /* font-weight: 400; */
+    vertical-align: middle;
+  }
 }
 
 .article__info {
@@ -174,6 +175,19 @@ a:visited {
   color: var(--subColor);
   font-size: var(--smallerFont);
   font-weight: lighter;
+
+  & a {
+    /* display: inline-block; */
+    /* margin-left: 0.75em; */
+    color: inherit;
+    font-size: inherit;
+    text-transform: lowercase;
+  }
+
+  & a:hover, & a:active {
+    color: var(--foregroundColor);
+    text-decoration: underline;
+  }
 }
 
 .article__hostname::before { content: "("}
@@ -190,7 +204,7 @@ a.article__hostname {
 .options__toggle--inactive::before { content: "\25b8 " }
 
 
-.options__toggle {
+.button-nostyle {
   font-family: 'HK Grotesk';
   font-weight: 300;
   border: none;
@@ -200,10 +214,8 @@ a.article__hostname {
   cursor: pointer;
 }
 
-.options__toggle:hover { text-decoration: underline; }
-.options__toggle:focus {
-  outline: 0;
-}
+.button-nostyle:hover { text-decoration: underline; }
+.button-nostyle:focus { outline: 0; }
 
 .crypto-ticker,
 .ticker-currency {
@@ -218,6 +230,10 @@ a.article__hostname {
   font-size: calc(var(--smallerFont) - 0.2em);
 }
 
+.ticker-currency:hover {
+  background-color: var(--backgroundHighlightColor);
+}
+
 .ticker-currency__icon {
   size: 1.5rem;
 }
@@ -229,7 +245,7 @@ a.article__hostname {
 .currency-info__change--positive::before { content: "+" }
 
 .currency-info {
-  margin-left: 1em;
+  margin-left: 0.5em;
   text-align: right;
 }
 
@@ -237,7 +253,6 @@ a.article__hostname {
   text-align: center;
   padding: 3rem *;
 }
-
 
 /* Cryptocurrency colors */
 .ADC { color: #3CB0E5; }

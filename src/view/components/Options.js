@@ -36,7 +36,18 @@ export default function Options({
   // TODO: filter out all feed burner links, need to provide the real url back
   //       in data folder
   const sourceToggles = availableSources
-    .sort((a, b) => (a.name.toUpperCase() > b.name.toUpperCase() ? 1 : 0))
+    .sort((a, b) => {
+      // Sort ascending
+      const formatString = s => s.name.toUpperCase().replace(/the/i, '').trim();
+      const aString = formatString(a);
+      const bString = formatString(b);
+      if (aString < bString) {
+        return -1;
+      } else if (aString < bString) {
+        return 1;
+      }
+      return 0;
+    })
     .map(({ name, faviconURL, type }) => {
       const sourceToggleClassList = ['options__source-toggle'];
       const isActive = activeFeeds.includes(type);
@@ -51,8 +62,8 @@ export default function Options({
           aria-checked={isActive}
           tabIndex="0"
           key={type}
-          onClick={toggleActiveFeed}
           data-feed={type}
+          onClick={toggleActiveFeed}
         >
           <img
             className="options__source-favicon"

@@ -149,7 +149,6 @@ a:visited {
 
 
 .favicon {
-  padding-right: 1em;
   size: 24px;
 }
 
@@ -158,16 +157,12 @@ a:visited {
   align-items: center;
   margin: 0.85em *;
   color: var(--foregroundColor);
+}
 
-  a {
-    margin: 0;
-    font-size: 1.15em;
-  }
-
-  svg {
-    /* font-weight: 400; */
-    vertical-align: middle;
-  }
+.article__media {
+  display: flex;
+  align-items: center;
+  margin-right: 0.5em;
 }
 
 .article__info {
@@ -204,7 +199,7 @@ a.article__hostname {
 .options__toggle--inactive::before { content: "\25b8 " }
 
 
-.button-nostyle {
+.button--nostyle {
   font-family: 'HK Grotesk';
   font-weight: 300;
   border: none;
@@ -214,8 +209,8 @@ a.article__hostname {
   cursor: pointer;
 }
 
-.button-nostyle:hover { text-decoration: underline; }
-.button-nostyle:focus { outline: 0; }
+.button--nostyle:hover { text-decoration: underline; }
+.button--nostyle:focus { outline: 0; }
 
 .crypto-ticker,
 .ticker-currency {

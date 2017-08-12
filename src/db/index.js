@@ -13,7 +13,7 @@ async function setupAllTables(conn) {
   const availableTables = await r.tableList().run(conn);
   const uncreatedTables = valueSeq(types).map(toTableName)
     .filter(table => !availableTables.includes(table));
-  uncreatedTables.forEach(table => setupTable(conn, table));
+  await Promise.all(uncreatedTables.map(table => setupTable(conn, table)));
   return conn;
 }
 
@@ -21,6 +21,31 @@ async function setupAllTables(conn) {
 function setupTable(conn, table) {
   r.tableCreate(table, { primaryKey: 'uuid' }).run(conn);
   r.table(table).indexCreate('publishedAt').run(conn);
+}
+
+const tableIndexes = conn => async tableName => ({
+  name: tableName,
+  indexList: await r.table(tableName).indexList().run(conn),
+});
+
+function createIndexes(index, ...feeds) {
+  // for filter
+  return async conn => {
+    const noIndex = ({ indexList }) => !indexList.includes(index);
+    const toTableIndex = tableIndexes(conn);
+    try {
+      const tablesAndIndexes = await Promise.all(
+        feeds.map(toTableName).map(toTableIndex),
+      );
+      const tablesWithNoIndex = await Promise.all(tablesAndIndexes.filter(noIndex));
+      await Promise.all(tablesWithNoIndex.map(
+        ({ name }) => r.table(name).indexCreate(index).run(conn),
+      ));
+      return conn;
+    } catch (e) {
+      throw new Error("Can't update table with new indexes");
+    }
+  };
 }
 
 // Create a union
@@ -59,9 +84,8 @@ function mergeUUIDs(conn, uuids) {
 }
 
 function promiseUUIDs(conn, documents) {
-  return documents.map(({ type, link, date }) => {
-    return promiseUniqueIdentifier(conn, type, link, date);
-  });
+  return documents.map(({ type, link, date }) =>
+    promiseUniqueIdentifier(conn, type, link, date));
 }
 
 /**
@@ -84,4 +108,5 @@ module.exports = {
   setupAllTables,
   updateTable,
   readTables,
+  createIndexes,
 };

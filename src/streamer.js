@@ -1,41 +1,35 @@
-// const io = require('socket.io')();
 const { connection, globalChangesFeed } = require('./db');
 const types = require('./data/types');
 const { valueSeq } = require('./utils');
-// Get array of all tablenames
 
-// Create a global union
+module.exports = (server) => {
+  const io = require('socket.io')(server);
 
-function handleNewArticle(err, item) {
-  if (err) {
-    throw new Error(`Got an error ${err} while listening for articles`);
-  }
-  /* Example new articles */
+  const handleNewArticle = (err, item) => {
+    if (err) {
+      throw new Error(`Got an error while listening for articles \n ${err}`);
+    }
+    const { type } = item.new_val;
+    io.to(type).emit('new article', item.new_val);
+  };
 
-  // { new_val:
-  //   { link: 'http://www.avclub.com/article/suspended-fox-news-host-sues-reporter-over-dick-pi-259386?utm_medium=RSS&utm_campaign=feeds',
-  //     publishedAt: 2017-08-12T03:24:00.000Z,
-  //     title: 'Newswire: Suspended Fox News host sues reporter over dick pic allegations',
-  //     type: 'av-club',
-  //     uuid: '8dbc2d96-4ea6-5fd6-954a-6687c1e7bbe4' },
-  //  old_val: null }
+  const listenToFeed = (err, cursor) => {
+    if (err) {
+      throw new Error(`Got an error while listening for articles \n ${err}`);
+    }
+    cursor.each(handleNewArticle);
+  };
 
-  // Emit `item` over socket io
+  io.on('connection', socket => {
+    socket.emit('greetings', 'welcome');
+    socket.on('i want to join', rooms => {
+      rooms.forEach(room => socket.join(room));
+    });
+    socket.on('i want to leave', socket.leave);
+  });
 
-
-}
-
-connection.then(conn => {
-  const listener = (err, item) => { console.log(item); };
-  return globalChangesFeed(
-    conn,
-    (err, cursor) => {
-      if (err) {
-        console.log('Oops im an error');
-      }
-      console.log('LISTENING FOR NEW ARTICLES....');
-      cursor.each(console.log);
-    },
-    valueSeq(types),
+  /* Start doing stuff */
+  connection.then(conn =>
+    globalChangesFeed(conn, listenToFeed, valueSeq(types)),
   );
-});
+};

@@ -1,12 +1,9 @@
 /* Server & React */
+const http = require('http');
 const express = require('express');
 const React = require('react');
 const { renderToString } = require('react-dom/server');
-
-/* Middleware Imports */
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const csp = require('helmet-csp');
+const stream = require('./streamer');
 
 /* Templating and Components */
 const template = require('./view/template');
@@ -18,46 +15,19 @@ const data = require('./data');
 const types = require('./data/types');
 const { valueSeq, findSource } = require('./utils');
 
-const server = express();
+// Server Stuff
+const app = express();
 const PORT = process.env.PORT || 9999;
+const server = http.createServer(app);
 
-// Middleware
-const cspSettings = csp({
-  directives: {
-    defaultSrc: [
-      "'self'",
-      'https://fonts.gstatic.com',
-      'https://fonts.googleapis.com',
-    ],
-    scriptSrc: [
-      "'self'",
-      "'unsafe-inline'",
-      "'unsafe-eval'",
-    ],
-    imgSrc: [
-      '*',
-    ],
-    styleSrc: [
-      "'self'",
-      'https://fonts.gstatic.com',
-      'https://fonts.googleapis.com',
-      "'unsafe-inline'",
-    ],
-    connectSrc: [
-      "'self'",
-      'https://api.coinmarketcap.com/',
-    ],
-  },
-});
+require('./middleware')(app);
 
-server.use(cookieParser());
-server.use(cspSettings);
-server.use(bodyParser.urlencoded({ extended: false }));
-server.use('/assets', express.static('dist/assets'));
+app.use('/assets', express.static('dist/assets'));
+stream(server);
 
 // Routes
 // Main route, serves up react
-server.get('/', cspSettings, async (request, response) => {
+app.get('/', async (request, response) => {
   // Grab any cookies containing the feed if they exist
   const { activeFeeds = '' } = request.cookies;
   const cookieFeeds = activeFeeds.split('+').filter(x => x);
@@ -88,7 +58,7 @@ server.get('/', cspSettings, async (request, response) => {
 });
 
 
-server.get('/api/feeds', async (request, response) => {
+app.get('/api/feeds', async (request, response) => {
   const { sources, page } = request.query;
   // parse the query
   // Going to assume they are the string values from ./data/types
@@ -106,7 +76,7 @@ server.get('/api/feeds', async (request, response) => {
 });
 
 // Show the available sources
-server.get('/api/sources', (_, response) => {
+app.get('/api/sources', (_, response) => {
   const sources = valueSeq(data);
   response.json(
     sources.map(({ name, faviconURL, host, type }) => ({
@@ -119,7 +89,7 @@ server.get('/api/sources', (_, response) => {
 });
 
 // Show the sources listing, but as the records from the db
-server.get('/api/sources/:source', async (request, response) => {
+app.get('/api/sources/:source', async (request, response) => {
   const { source, page = 0 } = request.params;
   try {
     const conn = await connection;
@@ -132,7 +102,7 @@ server.get('/api/sources/:source', async (request, response) => {
 });
 
 // Just get the sources listing, rather than from the db, this is for debugging
-server.get('/api/sources/:source/listing', (request, response) => {
+app.get('/api/sources/:source/listing', (request, response) => {
   const { source } = request.params;
   findSource(data, source).listing
     .then(results => response.json(results))
@@ -140,7 +110,7 @@ server.get('/api/sources/:source/listing', (request, response) => {
 });
 
 // Expose the favicons
-server.get('/api/sources/:source/favicon', (request, response) => {
+app.get('/api/sources/:source/favicon', (request, response) => {
   const { source } = request.params;
   const { faviconURL } = findSource(data, source);
   if (!faviconURL) {

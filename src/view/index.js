@@ -1,6 +1,7 @@
 // app/index.js
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import io from 'socket.io-client';
 import CoinMarketTicker from './components/CoinMarketTicker';
 import Listing from './components/Listing';
 import Options from './components/Options';
@@ -42,6 +43,15 @@ export default class App extends Component {
     this.toggleActiveFeed = this.toggleActiveFeed.bind(this);
     this.toggleOptions = this.toggleOptions.bind(this);
     this.goNextPage = this.goNextPage.bind(this);
+  }
+
+  componentDidMount() {
+    const socket = io('localhost:9000');
+    const { activeFeeds } = this.state;
+    // Messages are split up into rooms
+    socket.emit('i want to join', activeFeeds);
+    // Finish this and update feed
+    socket.on('new article', msg => console.log(msg));
   }
 
   toggleOptions() {

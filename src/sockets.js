@@ -28,7 +28,7 @@ module.exports = (server) => {
     socket.on('i want to leave', socket.leave);
   });
 
-  /* Start doing stuff */
+  // Emit change
   connection.then(conn =>
     globalChangesFeed(conn, listenToFeed, valueSeq(types)),
   );

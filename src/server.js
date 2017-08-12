@@ -3,7 +3,7 @@ const http = require('http');
 const express = require('express');
 const React = require('react');
 const { renderToString } = require('react-dom/server');
-const stream = require('./streamer');
+const sockets = require('./sockets');
 
 /* Templating and Components */
 const template = require('./view/template');
@@ -23,7 +23,7 @@ const server = http.createServer(app);
 require('./middleware')(app);
 
 app.use('/assets', express.static('dist/assets'));
-stream(server);
+sockets(server);
 
 // Routes
 // Main route, serves up react

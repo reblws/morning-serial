@@ -28,6 +28,7 @@ const tableIndexes = conn => async tableName => ({
   indexList: await r.table(tableName).indexList().run(conn),
 });
 
+// Create secondary indexes for each table that doesn't have one
 function createIndexes(index, ...feeds) {
   // for filter
   return async conn => {
@@ -49,7 +50,7 @@ function createIndexes(index, ...feeds) {
 }
 
 // Create a union
-async function readTables(conn, page = 0, ...types) {
+async function readTables(conn, page, ...types) {
   const availableTables = await r.tableList().run(conn);
   const tableNames = types.map(toTableName)
     .filter(table => availableTables.includes(table));
@@ -57,35 +58,49 @@ async function readTables(conn, page = 0, ...types) {
   // Paginate 50 articles a time
   const startIndex = 25 * page;
   const endIndex = startIndex + 25;
-  return doTableUnion(...tableNames)
+  return doTableUnion(tableNames)
     .slice(startIndex, endIndex)
     .run(conn);
 }
 
-function doTableUnion(...tables) {
-  const table = r.table(tables[0]).orderBy(r.desc('publishedAt'));
+// Perform a table union, with an optional callback performed on each table
+function doTableUnion(
+  tables,
+  callback = table => table.orderBy(r.desc('publishedAt')),
+  sortIndex = r.desc('publishedAt'),
+) {
+  const table = callback(r.table(tables[0]));
   const tablesLeft = tables.slice(1);
+  const options = sortIndex
+    ? { interleave: sortIndex }
+    : {};
   return tablesLeft.length < 1
     ? table
-    : table.union(doTableUnion(...tablesLeft), { interleave: r.desc('publishedAt') });
+    : table.union(doTableUnion(tablesLeft, callback, sortIndex), options);
 }
 
 async function updateTable(conn, feedType, documents) {
   // Check if the table exists
   const feedTable = toTableName(feedType);
-
   const uuids = await Promise.all(promiseUUIDs(conn, documents));
   const documentsToInsert = documents.map(mergeUUIDs(conn, uuids));
   return r.table(feedTable).insert(documentsToInsert).run(conn);
 }
 
 function mergeUUIDs(conn, uuids) {
-  return (doc, index) => Object.assign(doc, { uuid: uuids[index] });
+  return (doc, index) => Object.assign({}, doc, { uuid: uuids[index] });
 }
 
 function promiseUUIDs(conn, documents) {
   return documents.map(({ type, link, date }) =>
     promiseUniqueIdentifier(conn, type, link, date));
+}
+
+// Write a function that gives me a global change feed
+function globalChangesFeed(conn, callback, tableList) {
+  const globalTableList = valueSeq(tableList).map(toTableName);
+  const changeFeed = table => table.changes();
+  return doTableUnion(globalTableList, changeFeed, null).run(conn, callback);
 }
 
 /**
@@ -109,4 +124,5 @@ module.exports = {
   updateTable,
   readTables,
   createIndexes,
+  globalChangesFeed,
 };

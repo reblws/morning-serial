@@ -84,7 +84,10 @@ async function updateTable(conn, feedType, documents) {
   const feedTable = toTableName(feedType);
   const uuids = await Promise.all(promiseUUIDs(conn, documents));
   const documentsToInsert = documents.map(mergeUUIDs(conn, uuids));
-  return r.table(feedTable).insert(documentsToInsert).run(conn);
+  return r.table(feedTable).insert(
+    documentsToInsert,
+    { conflict: 'update' },
+  ).run(conn);
 }
 
 function mergeUUIDs(conn, uuids) {

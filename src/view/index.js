@@ -61,7 +61,7 @@ export default class App extends Component {
   }
 
   toggleActiveFeed(event) {
-    const { feed } = event.target.dataset;
+    const { feed } = event.currentTarget.dataset;
     const { activeFeeds } = this.state;
     const newActiveFeeds = activeFeeds.includes(feed)
       ? activeFeeds.filter(x => x !== feed).filter(x => x)
@@ -109,9 +109,10 @@ export default class App extends Component {
     const getFavicon = type =>
       availableSources.filter(src => src.type === type)[0].faviconURL;
 
+    const commonButtonClasses = ['options__toggle', 'button-nostyle'];
     const optionsButtonClassList = showOptions
-      ? ['options__toggle', 'options__toggle--active']
-      : ['options__toggle', 'options__toggle--inactive'];
+      ? commonButtonClasses.concat('options__toggle--active')
+      : commonButtonClasses.concat('options__toggle--inactive');
     return (
       <div>
         <main>
@@ -123,7 +124,7 @@ export default class App extends Component {
               showOptions={showOptions}
             />
             <h1 className="title__header">
-              Morning <strong>Serial</strong>
+              Morning <b>Serial</b>
             </h1>
             <div className="title__button-container">
               <button className={optionsButtonClassList.join(' ')} onClick={this.toggleOptions}>Options</button>
@@ -135,7 +136,9 @@ export default class App extends Component {
             getFavicon={getFavicon}
           />
           <div className="show-more">
-            <button onClick={this.goNextPage}>More</button>
+            <button className="button-nostyle" onClick={this.goNextPage}>
+              More
+            </button>
           </div>
         </main>
       </div>

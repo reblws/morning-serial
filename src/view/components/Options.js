@@ -36,7 +36,7 @@ export default function Options({
   // TODO: filter out all feed burner links, need to provide the real url back
   //       in data folder
   const sourceToggles = availableSources
-    .sort((a, b) => a.name.toUpperCase() > b.name.toUpperCase() ? 1 : 0)
+    .sort((a, b) => (a.name.toUpperCase() > b.name.toUpperCase() ? 1 : 0))
     .map(({ name, faviconURL, type }) => {
       const sourceToggleClassList = ['options__source-toggle'];
       const isActive = activeFeeds.includes(type);
@@ -61,7 +61,7 @@ export default function Options({
             title={name}
             style={isActive ? styles.active : styles.inactive}
           />
-          {name}
+          <span className="options__source-name">{name}</span>
         </div>
       );
     });

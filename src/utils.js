@@ -15,4 +15,5 @@ module.exports = {
   valueSeq,
   findSource: (data, typeName) =>
     valueSeq(data).filter(x => x.type === typeName)[0],
+  identity: x => x,
 };

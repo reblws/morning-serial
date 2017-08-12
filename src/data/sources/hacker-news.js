@@ -16,6 +16,7 @@ class HackerNews extends API {
         link: url || `https://news.ycombinator.com/item?=${id}`,
         publishedAt: new Date(time * 1000),
         type: this.type,
+        commentsID: id,
       }
     ));
   }
@@ -29,7 +30,7 @@ class HackerNews extends API {
 
   getItem(id) {
     return this.fetch(`/item/${id}.json`)
-      .catch(err => { throw err });;
+      .catch(err => { throw err });
   }
 
   get listing() {

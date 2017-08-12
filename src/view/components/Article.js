@@ -14,6 +14,12 @@ Article.propTypes = {
   // type: PropTypes.string.isRequired,
   favicon: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
+  commentsID: PropTypes.number,
+};
+
+Article.defaultProps = {
+  // Source doesnt support commentsID
+  commentsID: -1,
 };
 
 export default function Article({
@@ -22,8 +28,10 @@ export default function Article({
   link,
   favicon,
   type,
+  commentsID,
 }) {
   const { hostname, href } = url(link);
+  const hasComments = (type === 'hacker-news' && commentsID !== -1);
   return (
     <div className="article">
       <div className="article__media">
@@ -35,6 +43,12 @@ export default function Article({
           <time title={publishedAt} dateTime={publishedAt}>
             <Clock size={12} /> {moment(publishedAt).fromNow()}
           </time>
+          &nbsp;&nbsp;
+          {hasComments &&
+            <a href={`https://news.ycombinator.com/item?id=${commentsID}`}>
+              Comments
+            </a>
+          }
         </p>
       </div>
     </div>

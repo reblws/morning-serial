@@ -2,23 +2,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import io from 'socket.io-client';
+import { ChevronDown } from 'react-feather';
 import CoinMarketTicker from './components/CoinMarketTicker';
 import Listing from './components/Listing';
 import Options from './components/Options';
-import api from './api-client';
+import socketClient from './socket-client';
+import apiClient from './api-client';
 
 export default class App extends Component {
-  // Make the api request for the next page
-  static getNextPage(currentPage, activeFeeds) {
-    const nextPage = currentPage + 1;
-    return api.get('/feeds', {
-      params: {
-        sources: activeFeeds.join('+'),
-        page: nextPage,
-      },
-    }).then(x => x.data);
+  static calculatePage(articlesLoaded, increment) {
+    return parseInt(articlesLoaded / increment, 10) - 1;
   }
-
+  // Make the api request for the next page
   static writeActiveFeedsCookie(activeFeeds) {
     // Store active feeds as cookie to keep the same feeds
     // list on future visits
@@ -37,21 +32,29 @@ export default class App extends Component {
       activeFeeds,
       latestArticles,
       availableSources,
-      page: 0,
       showOptions: false,
+      increment: 25,
     };
     this.toggleActiveFeed = this.toggleActiveFeed.bind(this);
     this.toggleOptions = this.toggleOptions.bind(this);
     this.goNextPage = this.goNextPage.bind(this);
+    this.shiftNewArticle = this.shiftNewArticle.bind(this);
   }
 
   componentDidMount() {
-    const socket = io('localhost:9000');
     const { activeFeeds } = this.state;
-    // Messages are split up into rooms
-    socket.emit('i want to join', activeFeeds);
-    // Finish this and update feed
-    socket.on('new article', msg => console.log(msg));
+    socketClient.open(activeFeeds, this.shiftNewArticle);
+  }
+
+  componentWillUnmount() {
+    socketClient.close();
+  }
+
+  shiftNewArticle(article) {
+    const { latestArticles } = this.state;
+    const newArticles = [article, ...latestArticles]
+      .sort((a, b) => new Date(b) - new Date(a));
+    this.setState({ latestArticles: newArticles });
   }
 
   toggleOptions() {
@@ -62,22 +65,18 @@ export default class App extends Component {
 
   toggleActiveFeed(event) {
     const { feed } = event.currentTarget.dataset;
-    const { activeFeeds } = this.state;
+    const { activeFeeds, latestArticles, increment } = this.state;
+    // Compute page dynamically with length
     const newActiveFeeds = activeFeeds.includes(feed)
       ? activeFeeds.filter(x => x !== feed).filter(x => x)
       : [...activeFeeds, feed];
     // Need to make our api request here
     // TODO: handle when someone removes ALL feeds
-    return api.get('/feeds', {
-      params: {
-        sources: newActiveFeeds.join('+'),
-      },
-    })
-      .then(response => {
+    return apiClient.getNextPage(0, newActiveFeeds)
+      .then(latestArticles => {
         this.setState({
           activeFeeds: newActiveFeeds,
-          latestArticles: response.data,
-          page: 0,
+          latestArticles,
         });
         App.writeActiveFeedsCookie(newActiveFeeds);
       });
@@ -85,12 +84,13 @@ export default class App extends Component {
 
   goNextPage() {
     const {
-      page,
       activeFeeds,
       latestArticles,
+      increment,
     } = this.state;
-    const nextPageVal = page + 1;
-    return App.getNextPage(nextPageVal, activeFeeds)
+    const nextPageVal = App.calculatePage(latestArticles.length, increment) + 1;
+    const offset = activeFeeds % increment;
+    return apiClient.getNextPage(nextPageVal, activeFeeds, increment, offset)
       .then(newArticles => {
         this.setState({
           page: nextPageVal,
@@ -109,7 +109,7 @@ export default class App extends Component {
     const getFavicon = type =>
       availableSources.filter(src => src.type === type)[0].faviconURL;
 
-    const commonButtonClasses = ['options__toggle', 'button-nostyle'];
+    const commonButtonClasses = ['options__toggle-button', 'button--nostyle'];
     const optionsButtonClassList = showOptions
       ? commonButtonClasses.concat('options__toggle--active')
       : commonButtonClasses.concat('options__toggle--inactive');
@@ -136,8 +136,10 @@ export default class App extends Component {
             getFavicon={getFavicon}
           />
           <div className="show-more">
-            <button className="button-nostyle" onClick={this.goNextPage}>
+            <button className="button--nostyle" onClick={this.goNextPage}>
               More
+              <br />
+              <ChevronDown />
             </button>
           </div>
         </main>

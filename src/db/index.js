@@ -50,14 +50,14 @@ function createIndexes(index, ...feeds) {
 }
 
 // Create a union
-async function readTables(conn, page, ...types) {
+async function readTables(conn, page, types, increment = 25, offset = 0) {
   const availableTables = await r.tableList().run(conn);
   const tableNames = types.map(toTableName)
     .filter(table => availableTables.includes(table));
   // Filter the tables we don't have
   // Paginate 50 articles a time
-  const startIndex = 25 * page;
-  const endIndex = startIndex + 25;
+  const startIndex = increment * page;
+  const endIndex = startIndex + (increment + offset);
   return doTableUnion(tableNames)
     .slice(startIndex, endIndex)
     .run(conn);

@@ -25,17 +25,9 @@ module.exports = (app) => {
     const feeds = cookieFeeds.length > 0 ?
       cookieFeeds :
       defaultFeeds;
-    const availableSources = valueSeq(data).map(({
-      name,
-      faviconURL,
-      host,
-      type,
-    }) => ({
-      name,
-      faviconURL,
-      host,
-      type,
-    }));
+    const availableSources = valueSeq(data).map(
+      ({ name, faviconURL, host, type }) => ({ name, faviconURL, host, type }),
+    );
     try {
       const conn = await connection;
       const latestArticles = await readTables(conn, 0, feeds);
@@ -60,16 +52,19 @@ module.exports = (app) => {
     const {
       sources,
       page,
-      offset,
+      increment = 25,
+      offset = 0,
     } = request.query;
     // parse the query
     // Going to assume they are the string values from ./data/types
     const feeds = sources.split('+');
     // 1 -> should query db index 0
-    const pg = parseInt(page, 10) || 0;
+    const pageInt = parseInt(page, 10);
+    const incrementInt = parseInt(increment, 10);
+    const offsetInt = parseInt(offset, 10) || 0;
     try {
       const conn = await connection;
-      const latestArticles = await readTables(conn, pg, feeds, offset);
+      const latestArticles = await readTables(conn, pageInt, feeds, incrementInt, offsetInt);
       response.json(latestArticles);
     } catch (e) {
       response.sendStatus(500);
@@ -123,12 +118,8 @@ module.exports = (app) => {
 
   // Expose the favicons
   app.get('/api/sources/:source/favicon', (request, response) => {
-    const {
-      source,
-    } = request.params;
-    const {
-      faviconURL,
-    } = findSource(data, source);
+    const { source } = request.params;
+    const { faviconURL } = findSource(data, source);
     if (!faviconURL) {
       response.sendStatus(400);
       return;

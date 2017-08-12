@@ -37,8 +37,14 @@ export default function Article({
       <div className="article__media">
         <img className="favicon" src={favicon} alt={type} title={type} />
       </div>
-      <div>
-        <a className="article__link" href={href} target="_blank" rel="noreferrer noopener">{title}</a> <a href={hostname} className="article__hostname">{hostname}</a>
+      <div className="article__details">
+        <a className="article__link" href={href} target="_blank" rel="noreferrer noopener">
+          {title}
+        </a>
+        &nbsp;
+        <a href={hostname} className="article__hostname">
+          {hostname}
+        </a>
         <p className="article__info">
           <time title={publishedAt} dateTime={publishedAt}>
             <Clock size={12} /> {moment(publishedAt).fromNow()}

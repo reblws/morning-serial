@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import io from 'socket.io-client';
 import { ChevronDown } from 'react-feather';
+import moment from 'moment';
 import CoinMarketTicker from './components/CoinMarketTicker';
 import Listing from './components/Listing';
 import Options from './components/Options';
@@ -38,22 +39,22 @@ export default class App extends Component {
     this.toggleActiveFeed = this.toggleActiveFeed.bind(this);
     this.toggleOptions = this.toggleOptions.bind(this);
     this.goNextPage = this.goNextPage.bind(this);
-    this.shiftNewArticle = this.shiftNewArticle.bind(this);
+    this.addNewArticle = this.addNewArticle.bind(this);
   }
 
   componentDidMount() {
     const { activeFeeds } = this.state;
-    socketClient.open(activeFeeds, this.shiftNewArticle);
+    socketClient.open(activeFeeds, this.addNewArticle);
   }
 
   componentWillUnmount() {
     socketClient.close();
   }
 
-  shiftNewArticle(article) {
+  addNewArticle(article) {
     const { latestArticles } = this.state;
     const newArticles = [article, ...latestArticles]
-      .sort((a, b) => new Date(b) - new Date(a));
+      .sort((a, b) => moment.utc(a).diff(moment.utc(b)));
     this.setState({ latestArticles: newArticles });
   }
 

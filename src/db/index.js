@@ -56,7 +56,7 @@ async function readTables(conn, page, types, increment = 25, offset = 0) {
     .filter(table => availableTables.includes(table));
   // Filter the tables we don't have
   // Paginate 50 articles a time
-  const startIndex = increment * page;
+  const startIndex = (increment * page) + offset;
   const endIndex = startIndex + (increment + offset);
   return doTableUnion(tableNames)
     .slice(startIndex, endIndex)

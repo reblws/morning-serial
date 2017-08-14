@@ -2,7 +2,7 @@ const http = require('http');
 const express = require('express');
 
 const app = express();
-const PORT = process.env.PORT || 9999;
+const PORT = process.env.PORT;
 const server = http.createServer(app);
 
 app.use('/assets', express.static('dist/assets'));

@@ -14,6 +14,7 @@ function updateAllFeeds(conn) {
 async function updateFeed(conn, feed) {
   try {
     const docs = await feed.listing;
+    console.log(Date.now());
     return db.updateTable(conn, feed.type, docs)
       .then(results => {
         console.log(results.inserted, 'Inserted', feed.type);

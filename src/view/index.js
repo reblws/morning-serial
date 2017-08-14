@@ -66,7 +66,7 @@ export default class App extends Component {
 
   toggleActiveFeed(event) {
     const { feed } = event.currentTarget.dataset;
-    const { activeFeeds, latestArticles, increment } = this.state;
+    const { activeFeeds } = this.state;
     // Compute page dynamically with length
     const newActiveFeeds = activeFeeds.includes(feed)
       ? activeFeeds.filter(x => x !== feed).filter(x => x)
@@ -90,7 +90,7 @@ export default class App extends Component {
       increment,
     } = this.state;
     const nextPageVal = App.calculatePage(latestArticles.length, increment) + 1;
-    const offset = activeFeeds % increment;
+    const offset = activeFeeds.length % increment;
     return apiClient.getNextPage(nextPageVal, activeFeeds, increment, offset)
       .then(newArticles => {
         this.setState({

@@ -1,5 +1,6 @@
 {
   "name": "morning-serial",
+  "license": "MIT",
   "dependencies": {
     "axios": "^0.16.2",
     "body-parser": "^1.17.2",
@@ -42,6 +43,7 @@
     "eslint-plugin-react": "^7.2.1",
     "extract-text-webpack-plugin": "^3.0.0",
     "fbjs": "^0.8.14",
+    "inline-environment-variables-webpack-plugin": "^1.2.1",
     "json-loader": "^0.5.7",
     "npm-run-all": "^4.0.2",
     "postcss-import": "^10.0.0",

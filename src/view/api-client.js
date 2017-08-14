@@ -2,8 +2,11 @@ import axios from 'axios';
 
 class APIClient {
   constructor() {
+    const baseURL = process.env.NODE_ENV === 'production'
+      ? `https://${process.env.HOST}/api`
+      : 'localhost';
     this.axios = axios.create({
-      baseURL: 'https://serial.reblws.me/api/',
+      baseURL,
       timeout: 10000,
     });
   }

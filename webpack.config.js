@@ -1,24 +1,24 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const InlineEnvironmentVariablesPlugin = require('inline-environment-variables-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 
 const isProduction = process.env.NODE_ENV === 'production';
-const productionPluginDefine = isProduction ? [
-  new webpack.DefinePlugin({
-    'process.env': {
-      NODE_ENV: JSON.stringify('production'),
-    },
-  }),
-] : [];
-const clientLoaders = isProduction ? productionPluginDefine.concat([
-  new webpack.optimize.OccurrenceOrderPlugin(),
-  new webpack.optimize.UglifyJsPlugin({
-    compress: {
-      warnings: false,
-    },
-    sourceMap: false,
-  }),
-]) : [];
+const commonPlugins = [
+  new InlineEnvironmentVariablesPlugin()
+];
+
+const clientLoaders = isProduction
+  ? commonPlugins.concat([
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false,
+      },
+      sourceMap: false,
+    }),
+  ])
+  : commonPlugins;
 
 let commonLoaders = [{
   test: /\.json$/,
@@ -43,7 +43,7 @@ const serverConfig = {
     __dirname: false,
   },
   externals: nodeExternals(),
-  plugins: productionPluginDefine,
+  plugins: commonPlugins,
   module: {
     loaders: [{
       test: /\.js$/,
@@ -91,9 +91,9 @@ const clientConfig = {
 // This way we can avoid adding postcss loaders in the serverConfig
 
 const cssConfig = {
-  entry: `${__dirname  }/src/view/assets/index.css`,
+  entry: __dirname + '/src/view/assets/index.css',
   output: {
-    path: `${__dirname  }/dist/assets`,
+    path: `${__dirname}/dist/assets`,
     publicPath: '/',
     filename: 'bundle.css',
   },

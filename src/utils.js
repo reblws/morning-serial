@@ -16,4 +16,5 @@ module.exports = {
   findSource: (data, typeName) =>
     valueSeq(data).filter(x => x.type === typeName)[0],
   identity: x => x,
+  isProduction: process.env.NODE_ENV === 'production',
 };

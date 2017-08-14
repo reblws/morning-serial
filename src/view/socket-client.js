@@ -7,7 +7,7 @@ class SocketClient {
 
   // Opens a socket io connections
   open(rooms, callback) {
-    this.socket = io('serial.reblws.me');
+    this.socket = io(process.env.HOST);
     this.socket.emit('i want to join', rooms);
     this.socket.on('new article', callback);
   }

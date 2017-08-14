@@ -28,8 +28,8 @@ module.exports = app => {
       ],
       connectSrc: [
         "'self'",
-        'ws://serial.reblws.me',
-        'ws://localhost',
+        'wss://serial.reblws.me',
+        'wss://localhost',
         'https://api.coinmarketcap.com/',
       ],
     },

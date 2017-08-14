@@ -3,7 +3,7 @@ import axios from 'axios';
 class APIClient {
   constructor() {
     this.axios = axios.create({
-      baseURL: 'http://localhost:9000/api/',
+      baseURL: 'https://serial.reblws.me/api/',
       timeout: 10000,
     });
   }

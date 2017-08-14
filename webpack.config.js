@@ -6,33 +6,32 @@ const isProduction = process.env.NODE_ENV === 'production';
 const productionPluginDefine = isProduction ? [
   new webpack.DefinePlugin({
     'process.env': {
-      'NODE_ENV': JSON.stringify('production')
-    }
-  })
+      NODE_ENV: JSON.stringify('production'),
+    },
+  }),
 ] : [];
 const clientLoaders = isProduction ? productionPluginDefine.concat([
-  new webpack.optimize.DedupePlugin(),
   new webpack.optimize.OccurrenceOrderPlugin(),
   new webpack.optimize.UglifyJsPlugin({
     compress: {
-      warnings: false
+      warnings: false,
     },
-    sourceMap: false
-  })
+    sourceMap: false,
+  }),
 ]) : [];
 
-var commonLoaders = [{
+let commonLoaders = [{
   test: /\.json$/,
-  loader: 'json-loader'
+  loader: 'json-loader',
 }];
 
 const serverConfig = {
-  entry: __dirname + '/src/server.js',
+  entry: `${__dirname  }/src/server.js`,
   output: {
-    path: __dirname + '/dist',
+    path: `${__dirname  }/dist`,
     filename: 'server.js',
     libraryTarget: 'commonjs2',
-    publicPath: '/'
+    publicPath: '/',
   },
   target: 'node',
   node: {
@@ -41,7 +40,7 @@ const serverConfig = {
     process: false,
     Buffer: false,
     __filename: false,
-    __dirname: false
+    __dirname: false,
   },
   externals: nodeExternals(),
   plugins: productionPluginDefine,
@@ -53,16 +52,16 @@ const serverConfig = {
       options: {
         presets: ['react'],
       },
-    }].concat(commonLoaders)
-  }
-}
+    }].concat(commonLoaders),
+  },
+};
 
 const clientConfig = {
-  entry: __dirname + '/src/view/browser.js',
+  entry: `${__dirname}/src/view/browser.js`,
   output: {
-    path: __dirname + '/dist/assets',
+    path: `${__dirname}/dist/assets`,
     publicPath: '/',
-    filename: 'bundle.js'
+    filename: 'bundle.js',
   },
   plugins: clientLoaders,
   module: {
@@ -74,16 +73,16 @@ const clientConfig = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ["react"],
+            presets: ['react', 'es2015'],
           },
-        }
+        },
       },
-    ]
+    ],
   },
   resolve: {
-    extensions: ['.js', '.jsx']
-  }
-}
+    extensions: ['.js', '.jsx'],
+  },
+};
 
 // Exclusive css entry and output
 
@@ -92,11 +91,11 @@ const clientConfig = {
 // This way we can avoid adding postcss loaders in the serverConfig
 
 const cssConfig = {
-  entry: __dirname + '/src/view/assets/index.css',
+  entry: `${__dirname  }/src/view/assets/index.css`,
   output: {
-    path: __dirname + '/dist/assets',
+    path: `${__dirname  }/dist/assets`,
     publicPath: '/',
-    filename: 'bundle.css'
+    filename: 'bundle.css',
   },
   plugins: [new ExtractTextPlugin('bundle.css')],
   module: {
@@ -112,15 +111,15 @@ const cssConfig = {
               loader: 'css-loader',
               options: {
                 importLoaders: 1,
-              }
+              },
             },
             'postcss-loader',
-          ]
+          ],
         }),
       },
-    ]
-  }
-}
+    ],
+  },
+};
 
 module.exports = [
   serverConfig,

@@ -28,7 +28,8 @@ module.exports = app => {
       ],
       connectSrc: [
         "'self'",
-        `ws://${process.env.HOST || 'localhost'}`,
+        'ws://serial.reblws.me',
+        'ws://localhost',
         'https://api.coinmarketcap.com/',
       ],
     },

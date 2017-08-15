@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-const data = require('./data');
-const types = require('./data/types');
-const db = require('./db');
-const { valueSeq } = require('./utils');
+const data = require('../src/data');
+const types = require('../src/data/types');
+const db = require('../src/db');
+const { valueSeq } = require('../src/utils');
 
 const sources = valueSeq(data);
 const sourceTypes = valueSeq(types);

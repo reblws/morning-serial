@@ -67,13 +67,28 @@ export default class App extends Component {
   toggleActiveFeed(event) {
     const { feed } = event.currentTarget.dataset;
     const { activeFeeds } = this.state;
+    const isLeaving = activeFeeds.includes(feed);
+
+    // Don't do anything if all feeds are about to be removed
+    if (isLeaving && activeFeeds.length === 1) {
+      return;
+    }
+
     // Compute page dynamically with length
-    const newActiveFeeds = activeFeeds.includes(feed)
+    const newActiveFeeds = isLeaving
       ? activeFeeds.filter(x => x !== feed).filter(x => x)
       : [...activeFeeds, feed];
-    // Need to make our api request here
-    // TODO: handle when someone removes ALL feeds
-    return apiClient.getNextPage(0, newActiveFeeds)
+
+    // Leave or join the feed's socket room tepending if were toggling off or
+    // on
+    if (isLeaving) {
+      socketClient.leave(feed);
+    } else {
+      socketClient.join(feed);
+    }
+
+    // State
+    apiClient.getPage(0, newActiveFeeds)
       .then(latestArticles => {
         this.setState({
           activeFeeds: newActiveFeeds,
@@ -91,7 +106,7 @@ export default class App extends Component {
     } = this.state;
     const nextPageVal = App.calculatePage(latestArticles.length, increment) + 1;
     const offset = activeFeeds.length % increment;
-    return apiClient.getNextPage(nextPageVal, activeFeeds, increment, offset)
+    return apiClient.getPage(nextPageVal, activeFeeds, increment, offset)
       .then(newArticles => {
         this.setState({
           page: nextPageVal,

@@ -23,7 +23,10 @@ module.exports = (server) => {
   io.on('connection', socket => {
     socket.emit('greetings', 'welcome');
     socket.on('i want to join', rooms => {
-      rooms.forEach(room => socket.join(room));
+      if (Array.isArray(rooms)) {
+        rooms.forEach(room => socket.join(room));
+      }
+      socket.join(rooms);
     });
     socket.on('i want to leave', socket.leave);
   });

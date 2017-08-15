@@ -3,23 +3,29 @@ import { host } from '../config/view';
 
 class APIClient {
   constructor() {
-    const baseURL = host === 'localhost'
-      ? `${host}/api`
-      : `https://${host}/api`;
+    const baseURL = `//${host}`;
     this.axios = axios.create({
       baseURL,
       timeout: 10000,
     });
+    this.fetch = this.fetch.bind(this);
   }
 
   fetch(endpoint, config = {}) {
-    return this.axios.get(endpoint, config).then(x => x.data);
+    const request = this.axios.get(endpoint, config)
+      .then(x => x.data)
+      .catch(e => {
+        throw e;
+      });
+    return request;
   }
 
-  getPage(page, sources, increment = 25, offset = 0) {
-    return this.fetch('/feeds', {
+  getPage(page, sources, increment, offset = 0) {
+    return this.fetch('/api/feeds', {
       params: {
-        sources: Array.isArray(sources) ? sources.join('+') : sources,
+        sources: Array.isArray(sources)
+          ? sources.join('+')
+          : sources,
         page,
         increment,
         offset,

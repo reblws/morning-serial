@@ -2,9 +2,14 @@
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const csp = require('helmet-csp');
-const { host } = require('./config');
+const { host } = require('./config/server');
+const { isProduction } = require('./config');
 
 module.exports = app => {
+  // Only allow https in prod
+  const webSocketsHost = isProduction
+    ? `wss://${host}`
+    : `ws://${host}`;
   // Middleware
   const cspSettings = csp({
     directives: {
@@ -29,7 +34,8 @@ module.exports = app => {
       ],
       connectSrc: [
         "'self'",
-        `wss://${host}`,
+        host,
+        webSocketsHost,
         'https://api.coinmarketcap.com/',
       ],
     },

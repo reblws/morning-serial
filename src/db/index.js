@@ -54,19 +54,19 @@ function createIndexes(index, ...feeds) {
 }
 
 // Create a union
-async function readTables(conn, page, types, increment = 25, offset = 0) {
-  let tableNames;
-
+async function readTables(conn, page, feeds, increment = 25, offset = 0) {
+  let availableTables;
   try {
-    const availableTables = await r.tableList().run(conn);
+    availableTables = await r.tableList().run(conn);
   } catch (e) {
     throw new Error("Can't get availableTables")
   }
 
-  if (typeof types === 'string') {
-    tableNames = [types];
+  let tableNames;
+  if (typeof feeds === 'string') {
+    tableNames = [feeds];
   } else {
-    tableNames = types.map(toTableName)
+    tableNames = feeds.map(toTableName)
       .filter(table => availableTables.includes(table));
   }
   // Filter the tables we don't have

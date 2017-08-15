@@ -1,7 +1,6 @@
 // app/index.js
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import io from 'socket.io-client';
 import { ChevronDown } from 'react-feather';
 import moment from 'moment';
 import CoinMarketTicker from './components/CoinMarketTicker';
@@ -66,7 +65,7 @@ export default class App extends Component {
 
   toggleActiveFeed(event) {
     const { feed } = event.currentTarget.dataset;
-    const { activeFeeds } = this.state;
+    const { activeFeeds, increment } = this.state;
     const isLeaving = activeFeeds.includes(feed);
 
     // Don't do anything if all feeds are about to be removed
@@ -88,7 +87,7 @@ export default class App extends Component {
     }
 
     // State
-    apiClient.getPage(0, newActiveFeeds)
+    apiClient.getPage(0, newActiveFeeds, increment)
       .then(latestArticles => {
         this.setState({
           activeFeeds: newActiveFeeds,

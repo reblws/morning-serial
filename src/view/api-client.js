@@ -1,10 +1,11 @@
 import axios from 'axios';
+import { host } from '../config/view';
 
 class APIClient {
   constructor() {
-    const baseURL = process.env.NODE_ENV === 'production'
-      ? `https://${process.env.HOST}/api`
-      : 'localhost';
+    const baseURL = host === 'localhost'
+      ? `${host}/api`
+      : `https://${host}/api`;
     this.axios = axios.create({
       baseURL,
       timeout: 10000,
@@ -15,7 +16,7 @@ class APIClient {
     return this.axios.get(endpoint, config).then(x => x.data);
   }
 
-  getNextPage(page, sources, increment = 25, offset = 0) {
+  getPage(page, sources, increment = 25, offset = 0) {
     return this.fetch('/feeds', {
       params: {
         sources: Array.isArray(sources) ? sources.join('+') : sources,

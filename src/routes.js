@@ -22,9 +22,9 @@ module.exports = (app) => {
     } = request.cookies;
     const cookieFeeds = activeFeeds.split('+').filter(x => x);
     const defaultFeeds = valueSeq(types).filter(s => s !== 'product-hunt');
-    const feeds = cookieFeeds.length > 0 ?
-      cookieFeeds :
-      defaultFeeds;
+    const feeds = cookieFeeds.length > 0
+      ? cookieFeeds
+      : defaultFeeds;
     const availableSources = valueSeq(data).map(
       ({ name, faviconURL, host, type }) => ({ name, faviconURL, host, type }),
     );
@@ -51,7 +51,7 @@ module.exports = (app) => {
   app.get('/api/feeds', async (request, response) => {
     const {
       sources,
-      page,
+      page = 0,
       increment = 25,
       offset = 0,
     } = request.query;
@@ -64,7 +64,13 @@ module.exports = (app) => {
     const offsetInt = parseInt(offset, 10) || 0;
     try {
       const conn = await connection;
-      const latestArticles = await readTables(conn, pageInt, feeds, incrementInt, offsetInt);
+      const latestArticles = await readTables(
+        conn,
+        pageInt,
+        feeds,
+        incrementInt,
+        offsetInt,
+      );
       response.json(latestArticles);
     } catch (e) {
       response.sendStatus(500);

@@ -1,3 +1,5 @@
 export PORT=9000
 export RETHINKDB_PORT=28015
 export NODE_ENV=development
+export HOST=serial.reblws.me
+export RETHINKDB_HOST=localhost

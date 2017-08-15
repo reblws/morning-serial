@@ -1,4 +1,5 @@
 import io from 'socket.io-client';
+import { host } from '../config/view';
 
 class SocketClient {
   constructor() {
@@ -7,7 +8,7 @@ class SocketClient {
 
   // Opens a socket io connections
   open(rooms, callback) {
-    this.socket = io(process.env.HOST);
+    this.socket = io(host);
     this.socket.emit('i want to join', rooms);
     this.socket.on('new article', callback);
   }

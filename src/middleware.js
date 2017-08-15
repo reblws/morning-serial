@@ -2,6 +2,7 @@
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const csp = require('helmet-csp');
+const { host } = require('./config');
 
 module.exports = app => {
   // Middleware
@@ -28,8 +29,7 @@ module.exports = app => {
       ],
       connectSrc: [
         "'self'",
-        'wss://serial.reblws.me',
-        'wss://localhost',
+        `wss://${host}`,
         'https://api.coinmarketcap.com/',
       ],
     },

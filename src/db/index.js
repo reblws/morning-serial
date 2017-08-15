@@ -1,6 +1,6 @@
 const r = require('rethinkdb');
 const types = require('../data/types');
-const config = require('./config');
+const config = require('../config/db');
 const { toTableName, valueSeq } = require('../utils');
 
 function logChanges(err, result) {
@@ -10,11 +10,15 @@ function logChanges(err, result) {
 
 // Main setup function
 async function setupAllTables(conn) {
-  const availableTables = await r.tableList().run(conn);
-  const uncreatedTables = valueSeq(types).map(toTableName)
-    .filter(table => !availableTables.includes(table));
-  await Promise.all(uncreatedTables.map(table => setupTable(conn, table)));
-  return conn;
+  try {
+    const availableTables = await r.tableList().run(conn);
+    const uncreatedTables = valueSeq(types).map(toTableName)
+      .filter(table => !availableTables.includes(table));
+    await Promise.all(uncreatedTables.map(table => setupTable(conn, table)));
+    return conn;
+  } catch (e) {
+    throw new Error("Can't set up tables!")
+  }
 }
 
 // Tables need to have no dash
@@ -51,9 +55,20 @@ function createIndexes(index, ...feeds) {
 
 // Create a union
 async function readTables(conn, page, types, increment = 25, offset = 0) {
-  const availableTables = await r.tableList().run(conn);
-  const tableNames = types.map(toTableName)
-    .filter(table => availableTables.includes(table));
+  let tableNames;
+
+  try {
+    const availableTables = await r.tableList().run(conn);
+  } catch (e) {
+    throw new Error("Can't get availableTables")
+  }
+
+  if (typeof types === 'string') {
+    tableNames = [types];
+  } else {
+    tableNames = types.map(toTableName)
+      .filter(table => availableTables.includes(table));
+  }
   // Filter the tables we don't have
   // Paginate 50 articles a time
   const startIndex = (increment * page) + offset;

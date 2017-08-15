@@ -9,7 +9,10 @@ const commonPlugins = [
 ];
 
 const clientLoaders = isProduction
-  ? commonPlugins.concat([
+  ? [
+    new webpack.DefinePlugin({
+      'process.env.HOST': process.env.HOST,
+    }),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
@@ -17,7 +20,7 @@ const clientLoaders = isProduction
       },
       sourceMap: false,
     }),
-  ])
+  ]
   : commonPlugins;
 
 let commonLoaders = [{

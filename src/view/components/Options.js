@@ -5,13 +5,13 @@ Options.propTypes = {
   activeFeeds: PropTypes.arrayOf(PropTypes.string).isRequired,
   availableSources: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
-    faviconURL: PropTypes.string.isRequired,
     host: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
   })).isRequired,
   toggleActiveFeed: PropTypes.func.isRequired,
   // toggleOptions: PropTypes.func.isRequired,
   showOptions: PropTypes.bool.isRequired,
+  getFavicon: PropTypes.func.isRequired,
 };
 
 export default function Options({
@@ -19,6 +19,7 @@ export default function Options({
   activeFeeds,
   toggleActiveFeed,
   showOptions,
+  getFavicon,
 }) {
   const styles = {
     active: {
@@ -45,7 +46,7 @@ export default function Options({
       }
       return 0;
     })
-    .map(({ name, faviconURL, type }) => {
+    .map(({ name, type }) => {
       const sourceToggleClassList = ['options__source-toggle'];
       const isActive = activeFeeds.includes(type);
       if (!isActive) {
@@ -64,7 +65,7 @@ export default function Options({
         >
           <img
             className="options__source-favicon"
-            src={faviconURL}
+            src={getFavicon(type)}
             alt={`Toggle ${name}`}
             title={name}
             style={isActive ? styles.active : styles.inactive}

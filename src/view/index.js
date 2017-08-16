@@ -122,7 +122,6 @@ export default class App extends Component {
       showOptions,
     } = this.state;
 
-    // HNs both use .ico
     const getFavicon = type => `/assets/favicons/${type}.png`;
 
     const commonButtonClassList = ['options__toggle-button', 'button--nostyle'];
@@ -138,6 +137,7 @@ export default class App extends Component {
               activeFeeds={activeFeeds}
               toggleActiveFeed={this.toggleActiveFeed}
               showOptions={showOptions}
+              getFavicon={getFavicon}
             />
             <h1 className="title__header">
               Morning <b>Serial</b>

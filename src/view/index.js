@@ -53,7 +53,9 @@ export default class App extends Component {
   addNewArticle(article) {
     const { latestArticles } = this.state;
     const newArticles = [article, ...latestArticles]
-      .sort((a, b) => moment.utc(a).diff(moment.utc(b)));
+      .sort((a, b) => {
+        return moment.utc(b.publishedAt).diff(moment.utc(a.publishedAt));
+      });
     this.setState({ latestArticles: newArticles });
   }
 

@@ -21,7 +21,9 @@ module.exports = (app) => {
       activeFeeds = '',
     } = request.cookies;
     const cookieFeeds = activeFeeds.split('+').filter(x => x);
-    const defaultFeeds = valueSeq(types).filter(s => s !== 'product-hunt');
+    const defaultFeeds = valueSeq(types).filter(s =>
+      s !== 'product-hunt' && s !== 'beta-list' && s !== 'digg'
+    );
     const feeds = cookieFeeds.length > 0
       ? cookieFeeds
       : defaultFeeds;

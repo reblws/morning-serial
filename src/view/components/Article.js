@@ -49,11 +49,11 @@ export default function Article({
           {hostname}
         </a>
         <p className="article__info">
-          <time clasName="article__publish-date" title={publishedAtString}>
-            <Clock size={12} />
+          <time className="article__publish-date" title={publishedAtString}>
+            <Clock size={12} /> &nbsp;
             <Moment element="span" fromNow>{publishedAt}</Moment>
           </time>
-          &nbsp;&nbsp;
+          &nbsp; &nbsp;
           {hasComments &&
             <a href={`https://news.ycombinator.com/item?id=${commentsID}`}>
               Comments

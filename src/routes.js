@@ -121,15 +121,4 @@ module.exports = (app) => {
       .then(results => response.json(results))
       .catch(err => console.error(err));
   });
-
-  // Expose the favicons
-  app.get('/api/sources/:source/favicon', (request, response) => {
-    const { source } = request.params;
-    const { faviconURL } = findSource(data, source);
-    if (!faviconURL) {
-      response.sendStatus(400);
-      return;
-    }
-    response.redirect(faviconURL);
-  });
 };

@@ -5,14 +5,11 @@ const nodeExternals = require('webpack-node-externals');
 
 const isProduction = process.env.NODE_ENV === 'production';
 const commonPlugins = [
-  new InlineEnvironmentVariablesPlugin()
+  new InlineEnvironmentVariablesPlugin(),
 ];
 
 const clientLoaders = isProduction
-  ? [
-    new webpack.DefinePlugin({
-      'process.env.HOST': process.env.HOST,
-    }),
+  ? commonPlugins.concat([
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
@@ -20,7 +17,7 @@ const clientLoaders = isProduction
       },
       sourceMap: false,
     }),
-  ]
+  ])
   : commonPlugins;
 
 let commonLoaders = [{

@@ -1,0 +1,1 @@
+*/10 * * * * /path/to/morning-serial/scripts/feed-worker.js >> /path/to/logfile

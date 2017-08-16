@@ -121,13 +121,14 @@ export default class App extends Component {
       activeFeeds,
       showOptions,
     } = this.state;
-    const getFavicon = type =>
-      availableSources.filter(src => src.type === type)[0].faviconURL;
 
-    const commonButtonClasses = ['options__toggle-button', 'button--nostyle'];
+    // HNs both use .ico
+    const getFavicon = type => `/assets/favicons/${type}.png`;
+
+    const commonButtonClassList = ['options__toggle-button', 'button--nostyle'];
     const optionsButtonClassList = showOptions
-      ? commonButtonClasses.concat('options__toggle--active')
-      : commonButtonClasses.concat('options__toggle--inactive');
+      ? commonButtonClassList.concat('options__toggle--active')
+      : commonButtonClassList.concat('options__toggle--inactive');
     return (
       <div>
         <main>

@@ -11,7 +11,9 @@ module.exports = {
   toHumanName: type => type.split('-').map(capitalize).join(' '),
   toTableName: type => type.replace(/\W/g, ''),
   hostName: href => url.parse(href).host,
-  findFavicon: href => `https://icons.better-idea.org/icon?url=${href}&size=80..120..200`,
+  findFavicon: href => `
+    https://icons.better-idea.org/icon?url=${href}&formats=png&size=60..120..200
+  `,
   valueSeq,
   findSource: (data, typeName) =>
     valueSeq(data).filter(x => x.type === typeName)[0],

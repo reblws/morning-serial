@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import Moment from 'react-moment';
 import { Clock } from 'react-feather';
 import url from 'url-parse';
 
@@ -32,6 +32,9 @@ export default function Article({
 }) {
   const { hostname, href } = url(link);
   const hasComments = (type === 'hacker-news' && commentsID !== -1);
+  // Massage the date string here because client & server render `publishedAt`
+  // differently when placed under the time[title] attribute
+  const publishedAtString = new Date(publishedAt).toString();
   return (
     <div className="article">
       <div className="article__media">
@@ -46,8 +49,9 @@ export default function Article({
           {hostname}
         </a>
         <p className="article__info">
-          <time title={publishedAt} dateTime={publishedAt}>
-            <Clock size={12} /> {moment(publishedAt).fromNow()}
+          <time title={publishedAtString}>
+            <Clock size={12} />
+            <Moment element="span" fromNow>{publishedAt}</Moment>
           </time>
           &nbsp;&nbsp;
           {hasComments &&

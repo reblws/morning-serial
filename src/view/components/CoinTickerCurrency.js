@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CryptoCoin from 'react-cryptocoins';
 import { format } from 'currency-formatter';
 
 CoinTickerCurrency.propTypes = {

@@ -6,3 +6,4 @@ dist/*/*.js
 dist/*/*.css
 *.zip
 yarn-error.log
+dist/assets/favicons

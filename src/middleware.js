@@ -24,7 +24,7 @@ module.exports = app => {
         "'unsafe-eval'",
       ],
       imgSrc: [
-        '*',
+        "'self'",
       ],
       styleSrc: [
         "'self'",

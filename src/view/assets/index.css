@@ -188,6 +188,11 @@ a:visited {
 .article__hostname::before { content: "("}
 .article__hostname::after { content: ")"}
 
+.article__publish-date {
+  display: flex;
+  align-items: center;
+}
+
 a.article__hostname {
   font-size: var(--smallerFont);
   color: var(--subColor);

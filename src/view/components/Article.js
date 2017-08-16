@@ -49,7 +49,7 @@ export default function Article({
           {hostname}
         </a>
         <p className="article__info">
-          <time title={publishedAtString}>
+          <time clasName="article__publish-date" title={publishedAtString}>
             <Clock size={12} />
             <Moment element="span" fromNow>{publishedAt}</Moment>
           </time>

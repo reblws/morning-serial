@@ -7,6 +7,7 @@ module.exports = function html({ body, title, initialState }) {
       <head>
         <script>window.__APP_INITIAL_STATE__ = ${initialState}</script>
         <title>${title}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="/assets/bundle.css" />
       </head>
 

@@ -29,9 +29,6 @@ export default function Options({
       opacity: 0.2,
       maxWidth: 20,
     },
-    hidden: {
-      visibility: 'hidden',
-    },
   };
   // TODO: filter out all feed burner links, need to provide the real url back
   //       in data folder
@@ -80,9 +77,11 @@ export default function Options({
   const optionsClassList = ['options'];
   if (showOptions) {
     optionsClassList.push('options--visible');
+  } else {
+    optionsClassList.push('options--hidden');
   }
   return (
-    <div className={optionsClassList.join(' ')} style={showOptions ? {} : styles.hidden}>
+    <div className={optionsClassList.join(' ')}>
       {sourceToggles}
     </div>
   );

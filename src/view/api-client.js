@@ -20,7 +20,16 @@ class APIClient {
     return request;
   }
 
-  getPage(page, sources, increment, offset = 0) {
+  getPage(
+    page,
+    {
+      sources = [],
+      increment = 25,
+      offset = 0,
+      // noop by default
+      onDownloadProgress = Function.prototype(),
+    },
+  ) {
     return this.fetch('/api/feeds', {
       params: {
         sources: Array.isArray(sources)
@@ -30,6 +39,7 @@ class APIClient {
         increment,
         offset,
       },
+      onDownloadProgress,
     });
   }
 }

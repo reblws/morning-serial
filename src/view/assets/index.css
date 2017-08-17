@@ -226,7 +226,6 @@ a.article__hostname {
 }
 
 .button--nostyle:hover { text-decoration: underline; }
-// .button--nostyle:focus { outline: 0; }
 
 .crypto-ticker,
 .ticker-currency {
@@ -263,6 +262,7 @@ a.article__hostname {
 }
 
 .show-more {
+  outline: 0;
   text-align: center;
   padding: 3rem *;
 }
@@ -308,12 +308,14 @@ a.article__hostname {
     padding-top: 2em;
     display: grid;
     grid-template-areas:
-      "opt opt"
-      "opt opt"
-      "opt opt"
       "opt-bar opt-bar"
+      "opt opt"
+      "opt opt"
+      "opt opt"
       "h1 h1";
   }
+  /* Show a bottom-pointing triangle */
+  .options__toggle--active::before { content: "\25be " }
   .options--hidden {
     visibility: hidden;
     display: none;
@@ -327,4 +329,25 @@ a.article__hostname {
   .title__header {
     margin-top: 0.5em;
   }
+}
+
+/* Loading animation */
+.button--nostyle:focus {
+  outline: none;
+  text-decoration: underline;
+}
+
+.button__loader {
+  /* margin: 50px; */
+  outline: none;
+  size: 1em;
+  animation: rotate 0.8s infinite linear;
+  border: 2px solid #000;
+  border-right-color: transparent;
+  border-radius: 50%;
+}
+
+@keyframes rotate {
+  0%    { transform: rotate(0deg); }
+  100%  { transform: rotate(360deg); }
 }

@@ -131,37 +131,35 @@ export default class App extends Component {
       ? commonButtonClassList.concat('options__toggle--active')
       : commonButtonClassList.concat('options__toggle--inactive');
     return (
-      <div>
-        <main>
-          <header className="title">
-            <Options
-              availableSources={availableSources}
-              activeFeeds={activeFeeds}
-              toggleActiveFeed={this.toggleActiveFeed}
-              showOptions={showOptions}
-              getFavicon={getFavicon}
-            />
-            <h1 className="title__header">
-              Morning <b>Serial</b>
-            </h1>
-            <div className="title__button-container">
-              <button className={optionsButtonClassList.join(' ')} onClick={this.toggleOptions}>Options</button>
-            </div>
-          </header>
-          <CoinMarketTicker />
-          <Listing
-            latestArticles={latestArticles}
+      <main>
+        <header className="title">
+          <Options
+            availableSources={availableSources}
+            activeFeeds={activeFeeds}
+            toggleActiveFeed={this.toggleActiveFeed}
+            showOptions={showOptions}
             getFavicon={getFavicon}
           />
-          <div className="show-more">
-            <button className="button--nostyle" onClick={this.goNextPage}>
-              More
-              <br />
-              <ChevronDown />
-            </button>
+          <h1 className="title__header">
+            Morning <b>Serial</b>
+          </h1>
+          <div className="title__button-container">
+            <button className={optionsButtonClassList.join(' ')} onClick={this.toggleOptions}>Options</button>
           </div>
-        </main>
-      </div>
+        </header>
+        <CoinMarketTicker />
+        <Listing
+          latestArticles={latestArticles}
+          getFavicon={getFavicon}
+        />
+        <div className="show-more">
+          <button className="button--nostyle" onClick={this.goNextPage}>
+            More
+            <br />
+            <ChevronDown />
+          </button>
+        </div>
+      </main>
     );
   }
 }

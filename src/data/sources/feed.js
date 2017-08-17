@@ -10,6 +10,7 @@ class Feed {
    * Creates an instance of Feed.
    * @param {string} uri - Link to the site's RSS feed.
    * @param {string} type - Dashed name of the site the feed came from.
+   * @param {string} baseHost - In case the feed differes
    * @memberof Feed
    */
   constructor(uri, type, baseHost) {

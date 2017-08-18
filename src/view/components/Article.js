@@ -39,7 +39,6 @@ export default function Article({
   const hasComments = (type === 'hacker-news' && commentsID !== -1);
   // Massage the date string here because client & server render `publishedAt`
   // differently when placed under the time[title] attribute
-  const publishedAtString = moment(publishedAt).toString();
   return (
     <div className="article">
       <div className="article__media">
@@ -54,10 +53,16 @@ export default function Article({
           {hostname}
         </a>
         <p className="article__info">
-          <time className="article__publish-date" title={publishedAtString}>
-            <Clock size={12} /> &nbsp;
-            <Moment element="span" fromNow tz="America/Toronto">{publishedAt}</Moment>
-          </time>
+          <Clock size={12} /> &nbsp;
+          <Moment
+            className="article__publish-date"
+            title={moment(publishedAt).tz("America/Toronto").toString()}
+            element="span"
+            fromNow
+            tz="America/Toronto"
+          >
+            {publishedAt}
+          </Moment>
           &nbsp; &nbsp;
           {hasComments &&
             <a href={`https://news.ycombinator.com/item?id=${commentsID}`}>

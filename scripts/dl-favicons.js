@@ -32,11 +32,16 @@ favicons.forEach(({ type, faviconURL }) => {
       const destPath = join(faviDir, fileName);
       mkdirp(faviDir, err => {
         if (err) throw err;
-        const writeStream = fs.createWriteStream(destPath);
-        writeStream.on('open', () => console.log(`Writing ${fileName}...`));
-        writeStream.on('finish', () => console.log(`Finished writing ${destPath}`));
-        writeStream.on('error', (e) => { throw e; });
-        response.data.pipe(writeStream);
+        // Only writing if favicon !exist
+        if (fs.existsSync(fileName)) {
+          const writeStream = fs.createWriteStream(destPath);
+          // writeStream.on('open', () => console.log(`Writing ${fileName}...`));
+          writeStream.on('finish', () => console.log(`Finished writing ${destPath}`));
+          writeStream.on('error', (e) => { throw e; });
+          response.data.pipe(writeStream);
+        } else {
+          console.log(`Skipping ${fileName}...`);
+        }
       });
     });
 });

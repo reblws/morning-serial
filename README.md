@@ -1,5 +1,4 @@
 ![Morning Serial](https://user-images.githubusercontent.com/9971847/29468139-fe1f3e80-8410-11e7-9266-1d425d5ae9bd.png)
-# Morning Serial
 > a real-time news aggregator
 
 Morning Serial provides a chronological view of the latest headlines from a variety of different online tech-oriented sources. Once the page is loaded, new headlines are inserted in the page as they come out in real-time, giving a fresh look at the latest news without any interaction by the user. It also includes a cool cryptocurrency ticker.
@@ -18,15 +17,15 @@ I recommend using something like [direnv](https://direnv.net/) to manage project
 
 The following envrionment variables need to be set (the values in [.envrc.example](.envrc.example) should be fine):
 
-- PORT
+- **PORT**
   - Port you want the express server to listen on
-- RETHINKDB_PORT
+- **RETHINKDB_PORT**
   - The client-driver connection port
-- RETHINKDB_HOST
+- **RETHINKDB_HOST**
   - Where the RethinkDB instance is hosted
-- NODE_ENV
+- **NODE_ENV**
   - development or production
-- HOST
+- **HOST**
   - Hostname of the site, only matters if NODE_ENV=production
 
 ### Start
@@ -59,7 +58,7 @@ Any and all PRs are welcome. Feel free to raise any issues as well.
 
 If there's a cool site that you think the site is missing, adding it is easy if they have an ATOM/RSS feed. Just add the site in the `/src/data/types.js` file with the name of the site in CamelCase as the key and a dash-separated name as the value. Then add a new file in the `/src/data/sources` folder, and instantiate a new member of the Feed class ([example](/src/data/sources/ars-technica.js)).
 
-Most of the front-end is built with React and is found [view](/src/view) folder. The CSS is built with some PostCSS plugins (import, [cssnext](http://cssnext.io/), and [short](https://github.com/jonathantneal/postcss-short)), so use as many features from the latest CSS spec as you want.
+Most of the front-end is built with React and is found in the [view](/src/view) folder. The CSS is built with some PostCSS plugins (import, [cssnext](http://cssnext.io/), and [short](https://github.com/jonathantneal/postcss-short)), so use as many features from the latest CSS spec as you want.
 
 ## License
 

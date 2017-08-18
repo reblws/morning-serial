@@ -1,11 +1,13 @@
 // app/index.js
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ChevronDown } from 'react-feather';
 import moment from 'moment';
+
 import CoinMarketTicker from './components/CoinMarketTicker';
 import Listing from './components/Listing';
 import Options from './components/Options';
+import LoadingButton from './components/LoadingButton';
+
 import socketClient from './socket-client';
 import apiClient from './api-client';
 
@@ -33,6 +35,7 @@ export default class App extends Component {
       latestArticles,
       availableSources,
       showOptions: false,
+      isLoadingMoreArticles: false,
       increment: 25,
     };
     this.toggleActiveFeed = this.toggleActiveFeed.bind(this);
@@ -53,9 +56,9 @@ export default class App extends Component {
   addNewArticle(article) {
     const { latestArticles } = this.state;
     const newArticles = [article, ...latestArticles]
-      .sort((a, b) => {
-        return moment.utc(b.publishedAt).diff(moment.utc(a.publishedAt));
-      });
+      .sort((a, b) =>
+        moment.utc(b.publishedAt).diff(moment.utc(a.publishedAt))
+      );
     this.setState({ latestArticles: newArticles });
   }
 
@@ -75,7 +78,7 @@ export default class App extends Component {
       return;
     }
 
-    // Compute page dynamically with length
+    // Compute current page dynamically with length
     const newActiveFeeds = isLeaving
       ? activeFeeds.filter(x => x !== feed).filter(x => x)
       : [...activeFeeds, feed];
@@ -89,7 +92,12 @@ export default class App extends Component {
     }
 
     // State
-    apiClient.getPage(0, newActiveFeeds, increment)
+    const apiOptions = {
+      sources: newActiveFeeds,
+      increment,
+    };
+
+    apiClient.getPage(0, apiOptions)
       .then(latestArticles => {
         this.setState({
           activeFeeds: newActiveFeeds,
@@ -100,6 +108,9 @@ export default class App extends Component {
   }
 
   goNextPage() {
+    this.setState({
+      isLoadingMoreArticles: true,
+    });
     const {
       activeFeeds,
       latestArticles,
@@ -107,11 +118,19 @@ export default class App extends Component {
     } = this.state;
     const nextPageVal = App.calculatePage(latestArticles.length, increment) + 1;
     const offset = activeFeeds.length % increment;
-    return apiClient.getPage(nextPageVal, activeFeeds, increment, offset)
+    return apiClient.getPage(
+      nextPageVal,
+      {
+        sources: activeFeeds,
+        increment,
+        offset,
+      },
+    )
       .then(newArticles => {
         this.setState({
           page: nextPageVal,
           latestArticles: [...latestArticles, ...newArticles],
+          isLoadingMoreArticles: false,
         });
       });
   }
@@ -122,6 +141,7 @@ export default class App extends Component {
       availableSources,
       activeFeeds,
       showOptions,
+      isLoadingMoreArticles,
     } = this.state;
 
     const getFavicon = type => `/assets/favicons/${type}.png`;
@@ -152,13 +172,11 @@ export default class App extends Component {
           latestArticles={latestArticles}
           getFavicon={getFavicon}
         />
-        <div className="show-more">
-          <button className="button--nostyle" onClick={this.goNextPage}>
-            More
-            <br />
-            <ChevronDown />
-          </button>
-        </div>
+        <LoadingButton
+          isLoading={isLoadingMoreArticles}
+          goNextPage={this.goNextPage}
+        />
+
       </main>
     );
   }

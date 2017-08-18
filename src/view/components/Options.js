@@ -41,7 +41,7 @@ export default function Options({
       const bString = formatString(b);
       if (aString < bString) {
         return -1;
-      } else if (aString < bString) {
+      } else if (aString > bString) {
         return 1;
       }
       return 0;

@@ -41,7 +41,7 @@ module.exports = (app) => {
       const appString = renderToString(<App {...initialState} />);
       response.send(template({
         body: appString,
-        title: 'Morning Serial - News Aggregator',
+        title: 'Morning Serial - A Realtime News Aggregator',
         initialState: JSON.stringify(initialState),
       }));
     } catch (e) {

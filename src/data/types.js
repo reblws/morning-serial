@@ -7,12 +7,9 @@ module.exports = {
   /* Feeds */
   FiveThirtyEight: 'five-thirty-eight',
   AVClub: 'av-club',
-  BetaList: 'beta-list',
-  // CoinMarketCap: 'coin-market-cap',
   DesignerNews: 'designer-news',
   IndieHackers: 'indie-hackers',
   MacRumors: 'mac-rumors',
-  ProductHunt: 'product-hunt',
   TheOutline: 'the-outline',
   HackerNoon: 'hacker-noon',
   Slashdot: 'slashdot',

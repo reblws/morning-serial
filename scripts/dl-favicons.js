@@ -33,7 +33,7 @@ favicons.forEach(({ type, faviconURL }) => {
       mkdirp(faviDir, err => {
         if (err) throw err;
         // Only writing if favicon !exist
-        if (fs.existsSync(fileName)) {
+        if (!fs.existsSync(fileName)) {
           const writeStream = fs.createWriteStream(destPath);
           // writeStream.on('open', () => console.log(`Writing ${fileName}...`));
           writeStream.on('finish', () => console.log(`Finished writing ${destPath}`));

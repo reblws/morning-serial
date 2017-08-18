@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
+import 'moment-timezone';
 import { Clock } from 'react-feather';
 import url from 'url-parse';
 
@@ -44,14 +45,14 @@ export default function Article({
         <a className="article__link" href={href} target="_blank" rel="noreferrer noopener">
           {title}
         </a>
-        &nbsp;
-        <a href={hostname} className="article__hostname">
+        &ensp;
+        <a href={`//${hostname}`} className="article__hostname">
           {hostname}
         </a>
         <p className="article__info">
           <time className="article__publish-date" title={publishedAtString}>
             <Clock size={12} /> &nbsp;
-            <Moment element="span" fromNow>{publishedAt}</Moment>
+            <Moment element="span" fromNow tz="America/Toronto">{publishedAt}</Moment>
           </time>
           &nbsp; &nbsp;
           {hasComments &&

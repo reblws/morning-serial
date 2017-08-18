@@ -1,9 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
+import moment from 'moment';
 import 'moment-timezone';
 import { Clock } from 'react-feather';
 import url from 'url-parse';
+import { AllHtmlEntities } from 'html-entities';
+
+const entities = new AllHtmlEntities();
 
 Article.propTypes = {
   title: PropTypes.string.isRequired,
@@ -35,7 +39,7 @@ export default function Article({
   const hasComments = (type === 'hacker-news' && commentsID !== -1);
   // Massage the date string here because client & server render `publishedAt`
   // differently when placed under the time[title] attribute
-  const publishedAtString = new Date(publishedAt).toString();
+  const publishedAtString = moment(publishedAt).toString();
   return (
     <div className="article">
       <div className="article__media">
@@ -43,7 +47,7 @@ export default function Article({
       </div>
       <div className="article__details">
         <a className="article__link" href={href} target="_blank" rel="noreferrer noopener">
-          {title}
+          {entities.decode(title)}
         </a>
         &ensp;
         <a href={`//${hostname}`} className="article__hostname">

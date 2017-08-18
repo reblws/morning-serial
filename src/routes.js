@@ -43,6 +43,7 @@ module.exports = (app) => {
         body: appString,
         title: 'Morning Serial - A Realtime News Aggregator',
         initialState: JSON.stringify(initialState),
+        version: 2,
       }));
     } catch (e) {
       throw e;

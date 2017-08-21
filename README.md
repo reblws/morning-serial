@@ -31,22 +31,22 @@ The following envrionment variables need to be set (the values in [.envrc.exampl
 ### Start
 
 1. Make sure RethinkDB is alive before starting
-  - `rethinkdb`
+    - `rethinkdb`
 2. From the project folder, install the required dependencies
-  - `npm install` or `yarn install`
+    - `npm install` or `yarn install`
 3. Start the server
-  - `npm run start` or `yarn start`
-  - This starts nodemon and webpack in watch mode. The Javascript is automatically rebundled and the server restarted after each save.
-4. Building for production
-  - `npm run build` or `yarn build`
+    - `npm run start` or `yarn start`
+    - This starts nodemon and webpack in watch mode. The Javascript is automatically rebundled and the server restarted after each save.
 
-There are also two important scripts in the `scripts/` folder: `feed-worker.js` and `dl-favicons.js`. Run these in node to populate the database and download each source's favicons! The favicon script is also available in npm as the `favicons` script (`npm run favicons`).
+There are two important scripts in the `scripts/` folder: `feed-worker.js` and `dl-favicons.js`. Run these in node to populate the database and download each source's favicons. The favicon script is also available as a script under package.json (`npm run favicons`).
 
-### Deployment
+### Deploy
+
+`npm run build` or `yarn run build`
 
 After running the `build` script, the `dist/` folder should be populated with a copy of the server and static assets.
 
-Run the `feed-worker.js` script as a cronjob. There's an example file that shows the syntax.
+Run the `feed-worker.js` script as a cronjob to continue populating the db with new articles. There's an example file that shows the syntax.
 
 `dist/server.js` contains the code needed to run the Express server.
 

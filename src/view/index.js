@@ -147,24 +147,32 @@ export default class App extends Component {
     const getFavicon = type => `/assets/favicons/${type}.png`;
 
     const commonButtonClassList = ['options__toggle-button', 'button--nostyle'];
-    const optionsButtonClassList = showOptions
+    const optionsToggleButton = showOptions
       ? commonButtonClassList.concat('options__toggle--active')
       : commonButtonClassList.concat('options__toggle--inactive');
+    const titleInfoBar = showOptions
+      ? 'title__info-bar'
+      : 'title__info-bar title__info-bar--hidden';
     return (
       <main>
         <header className="title">
           <Options
-            availableSources={availableSources}
             activeFeeds={activeFeeds}
-            toggleActiveFeed={this.toggleActiveFeed}
+            availableSources={availableSources}
             showOptions={showOptions}
             getFavicon={getFavicon}
+            toggleActiveFeed={this.toggleActiveFeed}
           />
+          <div className={titleInfoBar}>
+            <a className="title__gh-icon" href="https://github.com/reblws/morning-serial">
+              <img className="title__gh-icon--icon"src="/assets/gh.png" alt="GitHub" />
+            </a>
+          </div>
           <h1 className="title__header">
             Morning <b>Serial</b>
           </h1>
           <div className="title__button-container">
-            <button className={optionsButtonClassList.join(' ')} onClick={this.toggleOptions}>Options</button>
+            <button className={optionsToggleButton.join(' ')} onClick={this.toggleOptions}>Options</button>
           </div>
         </header>
         <CoinMarketTicker />
@@ -176,7 +184,6 @@ export default class App extends Component {
           isLoading={isLoadingMoreArticles}
           goNextPage={this.goNextPage}
         />
-
       </main>
     );
   }

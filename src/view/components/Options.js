@@ -31,8 +31,7 @@ export default function Options({
       maxWidth: 20,
     },
   };
-  // TODO: filter out all feed burner links, need to provide the real url back
-  //       in data folder
+
   const sourceToggles = availableSources
     .sort((a, b) => {
       // Sort ascending
@@ -47,7 +46,7 @@ export default function Options({
       return 0;
     })
     .map(({ name, type }) => {
-      const sourceToggleClassList = ['options__source-toggle'];
+      const sourceToggleClassList = ['options__source-toggle', 'title__options'];
       const isActive = activeFeeds.includes(type);
       if (!isActive) {
         sourceToggleClassList.push('options__source-toggle--inactive');

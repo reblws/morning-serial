@@ -53,7 +53,7 @@ export default function Article({
           {hostname}
         </a>
         <p className="article__info">
-          <Clock size={12} /> &nbsp;
+          <Clock size={12} aria-hidden="true" /> &nbsp;
           <Moment
             className="article__publish-date"
             title={moment(publishedAt).tz("America/Toronto").toString()}

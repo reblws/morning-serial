@@ -29,7 +29,7 @@
   },
   "scripts": {
     "start": "npm-run-all --parallel watch:server watch:build",
-    "build": "NODE_ENV=production webpack",
+    "build": "webpack",
     "favicons": "./scripts/dl-favicons.js",
     "watch:build": "webpack --watch",
     "watch:server": "nodemon \"./dist/server.js\" --watch \"./dist\""

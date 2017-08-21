@@ -32,7 +32,7 @@
 }
 
 @custom-media --medium-viewport (max-width: 700px);
-@custom-media --small-viewport (max-width: 560px);
+@custom-media --small-viewport (max-width: 520px);
 
 
 :root {
@@ -68,6 +68,11 @@ main {
   background-color: var(--backgroundColor);
 }
 
+.title__gh-icon--icon {
+  display: inline-block;
+  size: 24px;
+}
+
 .title__header {
   /* No flexing */
   grid-area: h1;
@@ -94,10 +99,14 @@ main {
 .title {
   display: grid;
   grid-template-areas:
+    "info info info info info"
     "opt opt opt opt opt"
     "opt opt opt opt opt"
     "opt opt opt opt opt"
     "h1 h1 opt-bar opt-bar opt-bar";
+  grid-row-gap: 1rem;
+  margin-bottom: 1.25rem;
+  padding-top: 1.25rem;
 }
 
 .options {
@@ -106,7 +115,6 @@ main {
   grid-row-gap: 5px;
   grid-area: opt;
   justify-self: stretch;
-  margin: 2em *;
   font-size: var(--smallerFont);
 }
 
@@ -235,7 +243,6 @@ a.article__hostname {
 
 .crypto-ticker {
   flex: 1 1 0;
-  margin: 2rem *;
   flex-wrap: wrap;
   font-size: calc(var(--smallerFont) - 0.2em);
   justify-content: space-between;
@@ -267,6 +274,16 @@ a.article__hostname {
   padding: 3rem *;
 }
 
+.title__info-bar--hidden {
+  visibility: hidden;
+}
+
+.title__info-bar {
+  @apply --rowFlex;
+  justify-content: flex-start;
+  grid-area: info;
+}
+
 /* Responsive settings */
 
 @media (--medium-viewport) {
@@ -277,6 +294,7 @@ a.article__hostname {
     padding-top: 2em;
     display: grid;
     grid-template-areas:
+      "info info info"
       "opt opt opt"
       "opt opt opt"
       "opt opt opt"
@@ -307,12 +325,20 @@ a.article__hostname {
   .title {
     padding-top: 2em;
     display: grid;
+    grid-row-gap: 0.5rem;
     grid-template-areas:
       "opt-bar opt-bar"
       "opt opt"
       "opt opt"
       "opt opt"
+      "info info"
       "h1 h1";
+  }
+  .title__info-bar {
+    justify-content: center;
+  }
+  .title__info-bar--hidden {
+    display: none;
   }
   /* Show a bottom-pointing triangle */
   .options__toggle--active::before { content: "\25be " }
@@ -322,12 +348,17 @@ a.article__hostname {
   }
   .options {
     grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 0.25rem;
+    padding: * 0.75rem;
   }
   .title__button-container {
     margin: * auto;
   }
-  .title__header {
-    margin-top: 0.5em;
+  /* .title__header {
+    margin-top: 0.5rem;
+  } */
+  .title__options {
+    margin-bottom: 0.5rem;
   }
 }
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { ChevronDown } from 'react-feather';
 
 export default function LoadingButton({ isLoading, goNextPage }) {
   return (
@@ -7,7 +8,7 @@ export default function LoadingButton({ isLoading, goNextPage }) {
       <button className="button--nostyle" onClick={goNextPage}>
         {isLoading
           ? <div className="button__loader" />
-          : 'More'
+          : <div><strong>More</strong><br /><ChevronDown aria-hidden="true" /></div>
         }
       </button>
     </div>

@@ -172,7 +172,7 @@ export default class App extends Component {
             Morning <b>Serial</b>
           </h1>
           <div className="title__button-container">
-            <button className={optionsToggleButton.join(' ')} onClick={this.toggleOptions}>Options</button>
+            <button className={optionsToggleButton.join(' ')} onClick={this.toggleOptions}><strong>Options</strong></button>
           </div>
         </header>
         <CoinMarketTicker />

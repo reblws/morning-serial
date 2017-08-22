@@ -43,6 +43,7 @@
   --frameColor: #001B44;
   --subColor: #545454;
   --smallerFont: 0.85em;
+  --grid-gap: 1.5rem;
   --rowFlex: {
     display: flex;
     flex-direction: row;
@@ -104,8 +105,8 @@ main {
     "opt opt opt opt opt"
     "opt opt opt opt opt"
     "h1 h1 opt-bar opt-bar opt-bar";
-  grid-row-gap: 1rem;
-  margin-bottom: 1.25rem;
+  grid-row-gap: var(--grid-gap);
+  margin-bottom: var(--grid-gap);
   padding-top: 1.25rem;
 }
 
@@ -244,6 +245,7 @@ a.article__hostname {
 .crypto-ticker {
   flex: 1 1 0;
   flex-wrap: wrap;
+  margin-bottom: var(--grid-gap);
   font-size: calc(var(--smallerFont) - 0.2em);
   justify-content: space-between;
 }
@@ -323,9 +325,8 @@ a.article__hostname {
 
 @media (--small-viewport) {
   .title {
-    padding-top: 2em;
     display: grid;
-    grid-row-gap: 0.5rem;
+    grid-row-gap: calc(var(--grid-gap) / 2);
     grid-template-areas:
       "opt-bar opt-bar"
       "opt opt"
@@ -333,6 +334,10 @@ a.article__hostname {
       "opt opt"
       "info info"
       "h1 h1";
+    padding-top: 2em;
+  }
+  .title__header {
+    font-size: 2em;
   }
   .title__info-bar {
     justify-content: center;
@@ -342,6 +347,18 @@ a.article__hostname {
   }
   /* Show a bottom-pointing triangle */
   .options__toggle--active::before { content: "\25be " }
+  .options__source-toggle:nth-child(even) {
+    justify-content: flex-end;
+    & .options__source-favicon {
+      order: 2;
+      margin-right: 0;
+      margin-left: 0.5em;
+    };
+    & .options__source-name {
+      order: 1;
+      text-align: right;
+    };
+  }
   .options--hidden {
     visibility: hidden;
     display: none;

@@ -9,7 +9,7 @@ These instructions will get you a copy of the server up and running on your loca
 
 ### Prerequisites
 
-- [Node](https://nodejs.org/) >8.0.0
+- [Node](https://nodejs.org/) >=8.0.0
   - Check out [tj/n](https://github.com/tj/n) or [nvm](https://github.com/creationix/nvm) for node versioning
 - [RethinkDB](https://www.rethinkdb.com/) >=2.3
 
@@ -42,7 +42,7 @@ There are two important scripts in the `scripts/` folder: `feed-worker.js` and `
 
 ### Deploy
 
-`npm run build` or `yarn run build`
+`$ npm run build` or `$ yarn run build`
 
 After running the `build` script, the `dist/` folder should be populated with a copy of the server and static assets.
 

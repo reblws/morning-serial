@@ -155,7 +155,7 @@ export default class App extends Component {
       : 'title__info-bar title__info-bar--hidden';
     return (
       <main>
-        <header className="title">
+        <header className="title" role="banner">
           <Options
             activeFeeds={activeFeeds}
             availableSources={availableSources}

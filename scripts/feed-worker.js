@@ -29,4 +29,5 @@ db.connection
   .then(db.setupAllTables)
   .then(db.createIndexes('publishedAt', ...sourceTypes))
   .then(conn => Promise.resolve(updateAllFeeds(conn)))
+  .then(conn => conn.close())
   .then(() => process.exit());

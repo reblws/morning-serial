@@ -1,7 +1,7 @@
 const types = require('./types');
 
 module.exports = [
-  types.FiveThrityEight,
+  types.FiveThirtyEight,
   types.DesignerNews,
   types.HackerNoon,
   types.Slashdot,

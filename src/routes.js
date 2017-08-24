@@ -9,7 +9,7 @@ const App = require('./view').default;
 /* Data & Database */
 const { connection, readTables } = require('./db');
 const data = require('./data');
-const types = require('./data/types');
+const defaultFeeds = require('./data/default-feeds');
 const { valueSeq, findSource } = require('./utils');
 
 module.exports = (app) => {
@@ -21,9 +21,6 @@ module.exports = (app) => {
       activeFeeds = '',
     } = request.cookies;
     const cookieFeeds = activeFeeds.split('+').filter(x => x);
-    const defaultFeeds = valueSeq(types).filter(s =>
-      s !== 'product-hunt' && s !== 'beta-list' && s !== 'digg'
-    );
     const feeds = cookieFeeds.length > 0
       ? cookieFeeds
       : defaultFeeds;

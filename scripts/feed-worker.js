@@ -15,6 +15,10 @@ function updateAllFeeds(conn) {
     .then(x => {
       conn.close();
       return x;
+    })
+    .catch(e => {
+      conn.close();
+      return e;
     });
 }
 

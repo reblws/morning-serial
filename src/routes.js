@@ -30,11 +30,12 @@ module.exports = (app) => {
         latestArticles,
         availableSources,
       };
-      response.send(template({
+
+      template({
         title: 'Morning Serial - A Realtime News Aggregator',
         initialState,
         version: 2,
-      }));
+      }).toStream().pipe(response);
     } catch (e) {
       throw e;
     }

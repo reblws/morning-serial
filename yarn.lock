@@ -861,6 +861,10 @@ block-stream@*:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.11.0.tgz#534b9033c022c9579c56ba3b3e5a5caafbb650e1"
 
+bluebird@^3.4.7:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.0.tgz#791420d7f551eea2897453a8a77653f96606d67c"
+
 bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.4.0:
   version "4.11.8"
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.8.tgz#2cde09eb5ee341f484746bb0309b3253b1b1442f"
@@ -4260,6 +4264,13 @@ randombytes@^2.0.0, randombytes@^2.0.1:
 range-parser@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.0.tgz#f49be6b487894ddc40dcc94a322f611092e00d5e"
+
+rapscallion@^2.1.13:
+  version "2.1.13"
+  resolved "https://registry.yarnpkg.com/rapscallion/-/rapscallion-2.1.13.tgz#ce4c7168ed6f563f805ab881f25ce8143531038e"
+  dependencies:
+    bluebird "^3.4.7"
+    lodash "^4.17.4"
 
 raw-body@~2.2.0:
   version "2.2.0"

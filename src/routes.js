@@ -1,10 +1,5 @@
-/* React */
-const React = require('react');
-const { renderToString } = require('react-dom/server');
-
 /* Templating and Components */
 const template = require('./view/template');
-const App = require('./view').default;
 
 /* Data & Database */
 const { connection, readTables } = require('./db');
@@ -35,11 +30,9 @@ module.exports = (app) => {
         latestArticles,
         availableSources,
       };
-      const appString = renderToString(<App {...initialState} />);
       response.send(template({
-        body: appString,
         title: 'Morning Serial - A Realtime News Aggregator',
-        initialState: JSON.stringify(initialState),
+        initialState,
         version: 2,
       }));
     } catch (e) {

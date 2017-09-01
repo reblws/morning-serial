@@ -30,7 +30,11 @@ export default function Listing({ latestArticles, getFavicon }) {
     );
   });
   return (
-    <section className="listing">
+    <section
+      className="listing"
+      aria-live="polite"
+      aria-relevant="additions"
+    >
       { articles }
     </section>
   );

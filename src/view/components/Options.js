@@ -55,6 +55,7 @@ export default function Options({
       return (
         <div
           className={sourceToggleClassList.join(' ')}
+          id="options"
           role="menuitemcheckbox"
           aria-checked={isActive}
           tabIndex="0"

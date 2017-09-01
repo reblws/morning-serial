@@ -55,7 +55,7 @@ export default function Options({
       return (
         <div
           className={sourceToggleClassList.join(' ')}
-          role="checkbox"
+          role="menuitemcheckbox"
           aria-checked={isActive}
           tabIndex="0"
           key={type}
@@ -81,7 +81,7 @@ export default function Options({
     optionsClassList.push('options--hidden');
   }
   return (
-    <div className={optionsClassList.join(' ')}>
+    <div className={optionsClassList.join(' ')} role="menu">
       {sourceToggles}
     </div>
   );

@@ -30,12 +30,12 @@ export default function Listing({ latestArticles, getFavicon }) {
     );
   });
   return (
-    <section
+    <main
       className="listing"
       aria-live="polite"
       aria-relevant="additions"
     >
       { articles }
-    </section>
+    </main>
   );
 }

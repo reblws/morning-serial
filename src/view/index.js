@@ -154,7 +154,7 @@ export default class App extends Component {
       ? 'title__info-bar'
       : 'title__info-bar title__info-bar--hidden';
     return (
-      <main>
+      <div id="root-component">
         <header className="title" role="banner">
           <Options
             activeFeeds={activeFeeds}
@@ -191,7 +191,7 @@ export default class App extends Component {
           isLoading={isLoadingMoreArticles}
           goNextPage={this.goNextPage}
         />
-      </main>
+      </div>
     );
   }
 }

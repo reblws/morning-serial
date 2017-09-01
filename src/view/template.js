@@ -1,8 +1,7 @@
-// src/template.js
+// src/view/template.js
 const React = require('react');
 const { template, render } = require('rapscallion');
 const App = require('./index').default;
-
 
 module.exports = function html({ title, initialState, version = 0 }) {
   const versionString = String(version);
@@ -27,7 +26,7 @@ module.exports = function html({ title, initialState, version = 0 }) {
       <body>
         <div id="root">${appRenderer}</div>
         <script>
-          document.querySelector('main')
+          document.getElementById('root-component')
             .setAttribute('data-react-checksum', ${() => appRenderer.checksum()});
         </script>
         <script src="/assets/bundle.js?v=${versionString}"></script>

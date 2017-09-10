@@ -49,6 +49,24 @@ export default class App extends Component {
     socketClient.open(activeFeeds, this.addNewArticle);
   }
 
+  componentDidUpdate(_, prevState) {
+    const { activeFeeds, increment } = this.state;
+
+    const apiOptions = {
+      sources: activeFeeds,
+      increment,
+    };
+
+    // Since each feed change results in a new number, just compare length
+    // to verify they're not equal
+    const shouldRefreshArticles = prevState.activeFeeds.length !== activeFeeds.length;
+    if (shouldRefreshArticles) {
+      apiClient.getPage(0, apiOptions).then(latestArticles => {
+        this.setState({ latestArticles });
+      });
+    }
+  }
+
   componentWillUnmount() {
     socketClient.close();
   }
@@ -70,18 +88,13 @@ export default class App extends Component {
 
   toggleActiveFeed(event) {
     const { feed } = event.currentTarget.dataset;
-    const { activeFeeds, increment } = this.state;
+    const { activeFeeds } = this.state;
     const isLeaving = activeFeeds.includes(feed);
 
     // Don't do anything if all feeds are about to be removed
     if (isLeaving && activeFeeds.length === 1) {
       return;
     }
-
-    // Compute current page dynamically with length
-    const newActiveFeeds = isLeaving
-      ? activeFeeds.filter(x => x !== feed).filter(x => x)
-      : [...activeFeeds, feed];
 
     // Leave or join the feed's socket room tepending if were toggling off or
     // on
@@ -91,20 +104,17 @@ export default class App extends Component {
       socketClient.join(feed);
     }
 
-    // State
-    const apiOptions = {
-      sources: newActiveFeeds,
-      increment,
-    };
-
-    apiClient.getPage(0, apiOptions)
-      .then(latestArticles => {
-        this.setState({
-          activeFeeds: newActiveFeeds,
-          latestArticles,
-        });
-        App.writeActiveFeedsCookie(newActiveFeeds);
-      });
+    // Only change the new feed array here, componentDidUpdate should handle
+    // the API call for new articles
+    this.setState((prevState) => {
+      const nextActiveFeeds = isLeaving
+        ? prevState.activeFeeds.filter(prevFeed => prevFeed !== feed)
+        : [feed, ...prevState.activeFeeds];
+      App.writeActiveFeedsCookie(nextActiveFeeds);
+      return {
+        activeFeeds: nextActiveFeeds,
+      };
+    });
   }
 
   goNextPage() {
